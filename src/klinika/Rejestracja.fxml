@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="klinika.KlinikaController">
+ <children>
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Rejestracja">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="25.0" layoutY="30.0" prefHeight="25.0" prefWidth="60.0" text="Imie" />
+                        <Label layoutX="25.0" layoutY="60.0" prefHeight="25.0" prefWidth="60.0" text="Nazwisko" />
+                        <Label layoutX="25.0" layoutY="90.0" prefHeight="25.0" prefWidth="60.0" text="Pesel" />
+                        <Label layoutX="25.0" layoutY="120.0" prefHeight="25.0" prefWidth="60.0" text="Adres" />
+                        <Label layoutX="25.0" layoutY="150.0" prefHeight="25.0" prefWidth="60.0" text="Miasto" />
+                        <Label layoutX="25.0" layoutY="180.0" prefHeight="25.0" prefWidth="90.0" text="Kod pocztowy" />
+                        <Label layoutX="25.0" layoutY="210.0" prefHeight="25.0" prefWidth="90.0" text="Numer tel" />
+                        <TextField id="Imie" layoutX="115.0" layoutY="30.0" prefHeight="20.0" prefWidth="150.0" promptText="Podaj imie" />
+                        <TextField id="Nazwisko" layoutX="115.0" layoutY="60.0" promptText="Podaj Nazwisko" />
+                        <TextField id="Pesel" layoutX="115.0" layoutY="90.0" promptText="Podaj Pesel" />
+                        <TextField id="Adres" layoutX="115.0" layoutY="120.0" promptText="Podaj Adres" />
+                        <TextField id="Miasto" layoutX="115.0" layoutY="150.0" promptText="Podaj Miasto" />
+                        <TextField id="Kod_pocztowy" layoutX="115.0" layoutY="180.0" promptText="Podaj Kod" />
+                        <TextField id="nr_tel" layoutX="115.0" layoutY="210.0" promptText="Podaj nr tel" />
+                        <Button id="rejestracja" layoutX="116.0" layoutY="256.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Rejestruj" />
+                        <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="331.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../Downloads/nosacz.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Lista">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Zmiana terminu">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>    
+</AnchorPane>
