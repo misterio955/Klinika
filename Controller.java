@@ -17,7 +17,7 @@ public class Controller implements Initializable {
     @FXML
     private void test(ActionEvent event)
     {
-        System.out.println("Dziala");
+        System.out.println("Dziala :D");
         Runtime.getRuntime().exit(1);
     }
 
