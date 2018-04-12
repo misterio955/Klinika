@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+  <tabs>
+    <Tab text="Rejestracja">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="30.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" text="Imie" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="75.0" prefHeight="35.0" prefWidth="200.0" text="Nazwisko" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="105.0" prefHeight="35.0" prefWidth="200.0" text="Pesel" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="135.0" prefHeight="35.0" prefWidth="200.0" text="Miasto" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="165.0" prefHeight="35.0" prefWidth="200.0" text="Kod pocztowy" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="195.0" prefHeight="35.0" prefWidth="200.0" text="Numer telefonu" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField layoutX="230.0" layoutY="50.0" prefHeight="25.0" promptText="Wpisz Imie" />
+                  <TextField layoutX="230.0" layoutY="80.0" promptText="Wpisz Nazwisko" />
+                  <TextField layoutX="230.0" layoutY="110.0" promptText="Wpisz Pesel" />
+                  <TextField layoutX="230.0" layoutY="140.0" promptText="Wpisz Miasto" />
+                  <TextField layoutX="230.0" layoutY="170.0" promptText="Wpisz Kod pocztowy" />
+                  <TextField layoutX="230.0" layoutY="200.0" promptText="Wpisz numer telefonu" />
+                  <Button defaultButton="true" layoutX="325.0" layoutY="502.0" mnemonicParsing="false" onAction="#test" prefHeight="50.0" prefWidth="350.0" style="-fx-background-radius: 25;" text="Rejestruj" textAlignment="CENTER" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Lista">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+      <Tab text="Zmiana terminu">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField layoutX="14.0" layoutY="14.0" promptText="Podaj pesel pacjeta" />
+                  <TableView layoutX="201.0" layoutY="14.0" prefHeight="600.0" prefWidth="750.0">
+                    <columns>
+                      <TableColumn prefWidth="375.0" text="Data" />
+                      <TableColumn prefWidth="375.0" text="Lekarz" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+  </tabs>
+</TabPane>
