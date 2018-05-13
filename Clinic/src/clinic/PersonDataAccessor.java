@@ -12,7 +12,7 @@ import java.util.ArrayList ;
 public class PersonDataAccessor {
 
     // in real life, use a connection pool....
-    private Connection connection ;
+    private final Connection connection ;
 
     public PersonDataAccessor(String driverClassName, String dbURL, String user, String password) throws SQLException, ClassNotFoundException {
         Class.forName(driverClassName);
@@ -22,23 +22,25 @@ public class PersonDataAccessor {
     public void shutdown() throws SQLException {
         if (connection != null) {
             connection.close();
+            System.out.println("rozlaczono");
         }
     }
 
     public List<Patient> getPersonList() throws SQLException {
         try (
             Statement stmnt = connection.createStatement();
-            ResultSet rs = stmnt.executeQuery("select * from person");
+            ResultSet rs = stmnt.executeQuery("select * from pacjenci");
         ){
             List<Patient> patientList = new ArrayList<>();
             while (rs.next()) {
                 String ID = rs.getString("ID");
+                String Pesel = rs.getString("Pesel");
                 String Imie = rs.getString("Imie");
                 String Nazwisko = rs.getString("Nazwisko");
-                String Pesel = rs.getString("Pesel");
                 String Telefon = rs.getString("telefon");
-                Patient patient= new Patient(ID, Imie, Nazwisko, Pesel, Telefon);
+                Patient patient= new Patient(ID, Pesel, Imie, Nazwisko,  Telefon);
                 patientList.add(patient);
+                System.out.println(patient.print());
             }
             return patientList ;
         } 

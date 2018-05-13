@@ -18,6 +18,20 @@ public class Patient {
     public final void setID(String ID) {
         idProperty().set(ID);
     }
+    
+     private final StringProperty pesel = new SimpleStringProperty(this, "Pesel");
+
+    public StringProperty peselProperty() {
+        return pesel;
+    }
+
+    public final String getPesel() {
+        return peselProperty().get();
+    }
+
+    public final void setPesel(String pesel) {
+        peselProperty().set(pesel);
+    }
 
     private final StringProperty imie = new SimpleStringProperty(this, "Imie");
 
@@ -47,20 +61,7 @@ public class Patient {
         nazwiskoProperty().set(lastName);
     }
 
-    private final StringProperty pesel = new SimpleStringProperty(this, "Pesel");
-
-    public StringProperty peselProperty() {
-        return pesel;
-    }
-
-    public final String getPesel() {
-        return imieProperty().get();
-    }
-
-    public final void setPesel(String pesel) {
-        imieProperty().set(pesel);
-    }
-
+ 
     private final StringProperty telefon = new SimpleStringProperty(this, "Telefon");
 
     public StringProperty telefonProperty() {
@@ -68,19 +69,23 @@ public class Patient {
     }
 
     public final String getTelefon() {
-        return imieProperty().get();
+        return telefonProperty().get();
     }
 
     public final void setTelefon(String phone) {
-        imieProperty().set(phone);
+        telefonProperty().set(phone);
     }
 
-    public Patient(String ID, String firstName, String lastName, String pesel, String telefon) {
+    public Patient(String ID, String pesel, String firstName, String lastName,  String telefon) {
         setID(ID);
         setImie(firstName);
         setNazwisko(lastName);
         setPesel(pesel);
         setTelefon(telefon);
+    }
+
+    public String print() {
+        return "ID=" + getID() + ", pesel=" + getPesel() + ", imie=" + getImie() + ", nazwisko=" + getNazwisko() +  ", telefon=" + getTelefon();
     }
 
 }
