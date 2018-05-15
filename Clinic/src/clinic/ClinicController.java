@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package clinic;
 
 import java.io.IOException;
@@ -20,67 +16,60 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author student
- */
 public class ClinicController implements Initializable {
 
-    PersonDataAccessor pda;
-    
+    DatabaseConnection dbConn;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    } 
-    
-    
+    }
+
     public void connect() {
         try {
-            pda = new PersonDataAccessor("com.mysql.jdbc.Driver","jdbc:mysql://127.0.0.1:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/klinika", "root", "");
             System.out.println("polaczono");
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(ClinicController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
-    
+    }
+
     @FXML
-    private void showPatients(){
-        
-            try {
+    private void showPatients() {
+
+        try {
             connect();
-            pda.getPersonList();
-            pda.shutdown();
+            dbConn.getPatientsList();
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");  
+            dbConn.getDoctorsList();
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); 
+            dbConn.getVisitsList();
+            dbConn.shutdown();
         } catch (SQLException ex) {
             Logger.getLogger(ClinicController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
-    
-    
-     @FXML
-     private void quit(ActionEvent e){
-      
-      Runtime.getRuntime().exit(1);
-     }
-     
-     
+    }
 
+    @FXML
+    private void quit(ActionEvent e) {
 
-     @FXML
-     private void login(ActionEvent e){
-        
-            
-          try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
-                Parent root1 = (Parent) fxmlLoader.load();
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root1));  
-                stage.show();
-                ((Node)(e.getSource())).getScene().getWindow().hide();  
-        } catch(IOException eL) {
-           eL.printStackTrace();
-          }
-      
-     }
-    
+        Runtime.getRuntime().exit(1);
+    }
+
+    @FXML
+    private void login(ActionEvent e) {
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+            ((Node) (e.getSource())).getScene().getWindow().hide();
+        } catch (IOException eL) {
+            eL.printStackTrace();
+        }
+
+    }
+
 }
