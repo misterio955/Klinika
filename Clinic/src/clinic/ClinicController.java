@@ -1,4 +1,3 @@
-
 package clinic;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class ClinicController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    
     }
 
     public void connect() {
@@ -42,12 +41,18 @@ public class ClinicController implements Initializable {
 
         try {
             connect();
-           // dbConn.showList(dbConn.getPatientsList());
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");  
-           // dbConn.showList(dbConn.getDoctorsList());
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); 
+            //dbConn.showList(dbConn.getPatientsList());
+            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");  
+            //dbConn.showList(dbConn.getDoctorsList());
+
             //dbConn.showList(dbConn.getVisitsList());
-            dbConn.showList(dbConn.getPatientByPESEL("84112300687"));
+            //dbConn.showList(dbConn.getPatientByPESEL("78031541367"));
+            //dbConn.showList(dbConn.getPatientByName("Barbara","Bielan"));
+            //dbConn.showList(dbConn.getDoctorBySpec("Dentysta"));                  //do poprawy
+            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            //dbConn.showList(dbConn.getDoctorByRoom("2"));                         // do poprawy
+            //dbConn.showList(dbConn.getVisitByDate("2018-06-05 14:00:00.0"));      // do poprawy
+            //dbConn.showList(dbConn.getDoctorByName("Zbigniew","Kowalski"));
             dbConn.shutdown();
         } catch (SQLException ex) {
             Logger.getLogger(ClinicController.class.getName()).log(Level.SEVERE, null, ex);
