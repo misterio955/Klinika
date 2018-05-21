@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 
-public class Visit {
+public class Visit implements IComponent {
     
     private final StringProperty ID = new SimpleStringProperty(this, "ID");
 

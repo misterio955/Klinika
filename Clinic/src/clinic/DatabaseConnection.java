@@ -9,9 +9,14 @@ import java.sql.ResultSet ;
 import java.util.List ;
 import java.util.ArrayList ;
 
+
 public class DatabaseConnection {
 
-    // in real life, use a connection pool....
+   
+    
+    private List<Patient> patientsList;
+    private List<Doctor> doctorsList;
+    private List<Visit> visitsList;
     private final Connection connection ;
 
     public DatabaseConnection(String driverClassName, String dbURL, String user, String password) throws SQLException, ClassNotFoundException {
@@ -26,7 +31,7 @@ public class DatabaseConnection {
         }
     }
 
-    public List<Patient> getPatientsList() throws SQLException {
+    public void setPatientsList() throws SQLException {
         try (
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("select * from pacjenci");
@@ -40,18 +45,17 @@ public class DatabaseConnection {
                 String Telefon = rs.getString("telefon");
                 Patient patient= new Patient(ID, Pesel, Imie, Nazwisko,  Telefon);
                 patientList.add(patient);
-                System.out.println(patient.print());
             }
-            return patientList ;
+             this.patientsList = patientList;
         } 
     }
     
-    public List<Doctor> getDoctorsList() throws SQLException {
+    public void setDoctorsList() throws SQLException {
         try (
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("select * from lekarze");
         ){
-            List<Doctor> doctorsList = new ArrayList<>();
+            List<Doctor> doctorList = new ArrayList<>();
             while (rs.next()) {
                 String ID = rs.getString("ID");
                 
@@ -62,19 +66,19 @@ public class DatabaseConnection {
                 String Telefon = rs.getString("Telefon");
                 String Sala = rs.getString("Sala");
                 Doctor doctor = new Doctor(ID, Imie, Nazwisko,Password,Spec, Telefon, Sala);
-                doctorsList.add(doctor);
-                System.out.println(doctor.print());
+                doctorList.add(doctor);
+               // System.out.println(doctor.print());
             }
-            return doctorsList ;
+            this.doctorsList = doctorList;
         } 
     }
     
-     public List<Visit> getVisitsList() throws SQLException {
+     public void setVisitsList() throws SQLException {
         try (
             Statement stmnt = connection.createStatement();
             ResultSet rs = stmnt.executeQuery("select * from wizyty");
         ){
-            List<Visit> visitsList = new ArrayList<>();
+            List<Visit> visitList = new ArrayList<>();
             while (rs.next()) {
                 String ID = rs.getString("ID");
                 String ID_Doc = rs.getString("ID_Lekarza");
@@ -82,11 +86,46 @@ public class DatabaseConnection {
                 String Date = rs.getString("Data_Wizyty");
                 String Status = rs.getString("Status_wizyty");
                 Visit visit = new Visit(ID, ID_Doc, ID_Pat,Date,Status);
-                visitsList.add(visit);
-                System.out.println(visit.print());
+                visitList.add(visit);
+              //  System.out.println(visit.print());
             }
-            return visitsList ;
+            this.visitsList = visitList;
         } 
     }
+     
+      public List<Patient> getPatientsList(){
+       
+        return patientsList;
+     }
+       public List<Doctor> getDoctorsList(){
+       
+        
+        return doctorsList;
+       }
+     public List<Visit> getVisitsList(){
+       
+         
+         return visitsList;
+     }
+     
+     public List<Patient> getPatientByPESEL(String pesel){
+        
+        List<Patient> list = null;
+        for (Patient patient: patientsList) {
+            if(patient.getPesel()==pesel) {
+                list.add(patient);
+            }
+        }
+      
+        return list;
+     }
+     
+     public void showList(List list){
+        List<IComponent> lista = list;
+        for (IComponent component: lista) {
+            System.out.println(component.print());
+        } 
+     }
+
 
 }

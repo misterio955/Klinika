@@ -29,6 +29,9 @@ public class ClinicController implements Initializable {
         try {
             dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/klinika", "root", "");
             System.out.println("polaczono");
+            dbConn.setDoctorsList();
+            dbConn.setPatientsList();
+            dbConn.setVisitsList();
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(ClinicController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -39,11 +42,12 @@ public class ClinicController implements Initializable {
 
         try {
             connect();
-            dbConn.getPatientsList();
+           // dbConn.showList(dbConn.getPatientsList());
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");  
-            dbConn.getDoctorsList();
+           // dbConn.showList(dbConn.getDoctorsList());
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"); 
-            dbConn.getVisitsList();
+            //dbConn.showList(dbConn.getVisitsList());
+            dbConn.showList(dbConn.getPatientByPESEL("84112300687"));
             dbConn.shutdown();
         } catch (SQLException ex) {
             Logger.getLogger(ClinicController.class.getName()).log(Level.SEVERE, null, ex);

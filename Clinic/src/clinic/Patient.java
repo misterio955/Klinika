@@ -3,7 +3,7 @@ package clinic;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Patient {
+public class Patient implements IComponent{
 
     private final StringProperty ID = new SimpleStringProperty(this, "ID");
 

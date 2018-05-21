@@ -12,7 +12,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author Basian
  */
-public class Doctor {
+public class Doctor implements IComponent{
     
     private final StringProperty ID = new SimpleStringProperty(this, "ID");
 
