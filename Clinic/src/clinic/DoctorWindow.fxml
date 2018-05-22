@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinic.DoctorWindow">
+   <children>
+      <TableView id="List_table" layoutX="14.0" layoutY="14.0" prefHeight="575.0" prefWidth="550.0">
+         <columns>
+            <TableColumn id="Nr" prefWidth="125.0" text="Lp" />
+            <TableColumn id="Name" prefWidth="125.0" text="Imie" />
+            <TableColumn id="Surname" prefWidth="125.0" text="Nazwisko" />
+            <TableColumn id="Status_Visit" prefWidth="175.0" text="Status Wizyty" />
+         </columns>
+      </TableView>
+      <Button id="Finish_Visit_Button" layoutX="575.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="210.0" text="Wizyta zakonczona" />
+      <Button id="Visit_Do_Not_Take_Place_Button" layoutX="575.0" layoutY="80.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="210.0" text="Wizyta nie odbyla sie" />
+   </children>
+</AnchorPane>
