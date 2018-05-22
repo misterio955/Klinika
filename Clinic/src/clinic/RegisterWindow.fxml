@@ -13,7 +13,7 @@
  <children>
       <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Rejestracja">
+          <Tab id="Register_Tab" text="Rejestracja">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -30,9 +30,9 @@
                         <TextField id="Adress" layoutX="166.0" layoutY="128.0" promptText="Podaj Adres" />
                         <TextField id="Town" layoutX="166.0" layoutY="158.0" promptText="Podaj Miasto" />
                         <TextField id="Post_code" layoutX="166.0" layoutY="188.0" promptText="Podaj Kod" />
-                        <TextField id="e_mail" layoutX="166.0" layoutY="218.0" promptText="Podaj e-mail" />
-                        <Button id="rejestracja" layoutX="166.0" layoutY="264.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Rejestruj" />
-                        <TableView layoutX="369.0" layoutY="31.0" prefHeight="450.0" prefWidth="376.0">
+                        <TextField id="E_mail" layoutX="166.0" layoutY="218.0" promptText="Podaj e-mail" />
+                        <Button id="Register_Button" layoutX="76.0" layoutY="264.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="240.0" text="Rejestruj" />
+                        <TableView id="Free_Data_Table" layoutX="369.0" layoutY="31.0" prefHeight="450.0" prefWidth="376.0">
                            <columns>
                               <TableColumn id="Free_data_visit" prefWidth="375.0" text="Wolne Daty Wizyt" />
                            </columns>
@@ -41,11 +41,11 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Lista">
+          <Tab id="List_Tab" text="Lista">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView id="List_Table" layoutX="25.0" layoutY="57.0" prefHeight="500.0" prefWidth="750.0">
+                        <TableView id="List_Table" layoutX="15.0" layoutY="57.0" prefHeight="500.0" prefWidth="750.0">
                           <columns>
                             <TableColumn id="Name" prefWidth="150.0" text="Imie" />
                               <TableColumn id="Surname" prefWidth="150.0" text="Nazwisko" />
@@ -53,12 +53,12 @@
                               <TableColumn id="Pesel" prefWidth="175.0" text="Pesel" />
                           </columns>
                         </TableView>
-                        <Button id="Button_Find_Pesel" layoutX="675.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Znajdz" />
-                        <TextField id="Label_Find_Pesel" alignment="TOP_CENTER" layoutX="31.0" layoutY="15.0" prefHeight="25.0" prefWidth="600.0" promptText="Wpisz pesel" />
+                        <Button id="Button_Find_Pesel" layoutX="660.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Znajdz" />
+                        <TextField id="Label_Find_Pesel" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="600.0" promptText="Wpisz pesel" />
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab text="Zmiana terminu">
+            <Tab id="Change_Data_Tab" text="Zmiana terminu">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -70,14 +70,14 @@
                               <TableColumn id="Data_visit" prefWidth="175.0" text="Data wizyty" />
                            </columns>
                         </TableView>
-                        <Button id="Button_find" layoutX="465.0" layoutY="15.0" mnemonicParsing="false" prefWidth="100.0" text="Znajdz" />
+                        <Button id="Button_Find" layoutX="465.0" layoutY="15.0" mnemonicParsing="false" prefWidth="100.0" text="Znajdz" />
                         <TextField id="Text_Find" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="430.0" promptText="Podaj pesel" />
-                        <TableView layoutX="586.0" layoutY="57.0" prefHeight="450.0" prefWidth="200.0">
+                        <TableView id="Free_Data_Table" layoutX="586.0" layoutY="57.0" prefHeight="450.0" prefWidth="200.0">
                           <columns>
                             <TableColumn id="Free_data_visit" prefWidth="200.0" text="Wolne Daty Wizyt" />
                           </columns>
                         </TableView>
-                        <Button id="Change_data_visit" layoutX="15.0" layoutY="525.0" mnemonicParsing="false" prefWidth="775.0" text="Zmien" />
+                        <Button id="Change_Data_Visit" layoutX="15.0" layoutY="525.0" mnemonicParsing="false" prefWidth="775.0" text="Zmien" />
                      </children></AnchorPane>
               </content>
             </Tab>
