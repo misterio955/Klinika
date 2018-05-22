@@ -20,17 +20,11 @@
                         <Label layoutX="76.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" text="Imie" />
                         <Label layoutX="76.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" text="Nazwisko" />
                         <Label layoutX="76.0" layoutY="98.0" prefHeight="25.0" prefWidth="60.0" text="Pesel" />
-                        <Label layoutX="76.0" layoutY="128.0" prefHeight="25.0" prefWidth="60.0" text="Adres" />
-                        <Label layoutX="76.0" layoutY="158.0" prefHeight="25.0" prefWidth="60.0" text="Miasto" />
-                        <Label layoutX="76.0" layoutY="188.0" prefHeight="25.0" prefWidth="90.0" text="Kod pocztowy" />
-                        <Label layoutX="76.0" layoutY="218.0" prefHeight="25.0" prefWidth="90.0" text="e-mail" />
+                        <Label layoutX="77.0" layoutY="128.0" prefHeight="25.0" prefWidth="90.0" text="e-mail" />
                         <TextField id="Name" layoutX="166.0" layoutY="38.0" prefHeight="20.0" prefWidth="150.0" promptText="Podaj imie" />
                         <TextField id="Surname" layoutX="166.0" layoutY="68.0" promptText="Podaj Nazwisko" />
                         <TextField id="Pesel" layoutX="166.0" layoutY="98.0" promptText="Podaj Pesel" />
-                        <TextField id="Adress" layoutX="166.0" layoutY="128.0" promptText="Podaj Adres" />
-                        <TextField id="Town" layoutX="166.0" layoutY="158.0" promptText="Podaj Miasto" />
-                        <TextField id="Post_code" layoutX="166.0" layoutY="188.0" promptText="Podaj Kod" />
-                        <TextField id="E_mail" layoutX="166.0" layoutY="218.0" promptText="Podaj e-mail" />
+                        <TextField id="E_mail" layoutX="167.0" layoutY="128.0" promptText="Podaj e-mail" />
                         <Button id="Register_Button" layoutX="76.0" layoutY="264.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="240.0" text="Rejestruj" />
                         <TableView id="Free_Data_Table" layoutX="369.0" layoutY="31.0" prefHeight="450.0" prefWidth="376.0">
                            <columns>
@@ -41,23 +35,65 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab id="List_Tab" text="Lista">
+          <Tab id="List_Tab" text="Lista pacjętów">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView id="List_Table" layoutX="15.0" layoutY="57.0" prefHeight="500.0" prefWidth="750.0">
+                        <TableView id="List_Table" layoutX="14.0" layoutY="107.0" prefHeight="450.0" prefWidth="750.0">
                           <columns>
+                              <TableColumn id="Pesel" prefWidth="175.0" text="Pesel" />
                             <TableColumn id="Name" prefWidth="150.0" text="Imie" />
                               <TableColumn id="Surname" prefWidth="150.0" text="Nazwisko" />
-                              <TableColumn id="Data_visit" prefWidth="275.0" text="Data wizyty" />
-                              <TableColumn id="Pesel" prefWidth="175.0" text="Pesel" />
+                              <TableColumn id="E_mail" prefWidth="275.0" text="e-mail" />
                           </columns>
                         </TableView>
-                        <Button id="Button_Find_Pesel" layoutX="660.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Znajdz" />
-                        <TextField id="Label_Find_Pesel" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="600.0" promptText="Wpisz pesel" />
+                        <Button id="Button_Find_Pesel" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz pesel" />
+                        <TextField id="Find_Pesel_Text" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="550.0" promptText="Wpisz pesel" />
+                        <TextField id="Find_Name_Text" alignment="TOP_CENTER" layoutX="15.0" layoutY="50.0" prefHeight="25.0" prefWidth="270.0" promptText="Wpisz imie" />
+                        <Button id="Button_Find_Name_and_Surname" layoutX="610.0" layoutY="50.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz inicjały" />
+                        <TextField id="Find_Sur_Text" alignment="TOP_CENTER" layoutX="295.0" layoutY="50.0" prefHeight="25.0" prefWidth="270.0" promptText="Wpisz nazwisko" />
                      </children></AnchorPane>
             </content>
           </Tab>
+            <Tab id="List_Doctor" text="Lista Lekarzy">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView id="List_Table" layoutX="25.0" layoutY="132.0" prefHeight="425.0" prefWidth="750.0">
+                           <columns>
+                              <TableColumn id="Name" prefWidth="150.0" text="Imie" />
+                              <TableColumn id="Surname" prefWidth="150.0" text="Nazwisko" />
+                              <TableColumn id="Specialization" prefWidth="150.0" text="Specjalizacja" />
+                              <TableColumn id="Room_nr" prefWidth="150.0" text="nr pokoju" />
+                              <TableColumn id="Phone_nr" prefWidth="150.0" text="Telefon" />
+                           </columns>
+                        </TableView>
+                        <Button id="Button_Find_Name_And_Surname" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz inicjały" />
+                        <TextField id="Find_Name_Text" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj imie" />
+                        <TextField id="Find_Surname_Text" alignment="TOP_CENTER" layoutX="300.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nazwisko" />
+                        <TextField id="Find_Specialization_Text" alignment="TOP_CENTER" layoutX="15.0" layoutY="50.0" prefHeight="25.0" prefWidth="560.0" promptText="Wpisz specjalizacje lekarza" />
+                        <Button id="Button_Find_Specialization" layoutX="610.0" layoutY="50.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz specjalizacje" />
+                        <TextField id="Find_Room_Text" alignment="TOP_CENTER" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nr pokoju" />
+                        <Button id="Button_Find_Room" layoutX="610.0" layoutY="85.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz pokój" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab id="List_Visit" text="Lista Wizyt">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView id="List_Table" layoutX="25.0" layoutY="14.0" prefHeight="500.0" prefWidth="750.0">
+                           <columns>
+                              <TableColumn id="Name" prefWidth="200.0" text="Imie" />
+                              <TableColumn id="Surname" prefWidth="200.0" text="Nazwisko" />
+                              <TableColumn id="Data_visit" prefWidth="350.0" text="Data wizyty" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
             <Tab id="Change_Data_Tab" text="Zmiana terminu">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
