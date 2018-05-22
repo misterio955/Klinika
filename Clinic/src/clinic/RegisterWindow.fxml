@@ -1,52 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinic.ClinicController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clinic.ClinicController">
  <children>
-      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Rejestracja">
+          <Tab id="Register_Tab" text="Rejestracja">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="25.0" layoutY="30.0" prefHeight="25.0" prefWidth="60.0" text="Imie" />
-                        <Label layoutX="25.0" layoutY="60.0" prefHeight="25.0" prefWidth="60.0" text="Nazwisko" />
-                        <Label layoutX="25.0" layoutY="90.0" prefHeight="25.0" prefWidth="60.0" text="Pesel" />
-                        <Label layoutX="25.0" layoutY="120.0" prefHeight="25.0" prefWidth="60.0" text="Adres" />
-                        <Label layoutX="25.0" layoutY="150.0" prefHeight="25.0" prefWidth="60.0" text="Miasto" />
-                        <Label layoutX="25.0" layoutY="180.0" prefHeight="25.0" prefWidth="90.0" text="Kod pocztowy" />
-                        <Label layoutX="25.0" layoutY="210.0" prefHeight="25.0" prefWidth="90.0" text="Numer tel" />
-                        <TextField id="Imie" layoutX="115.0" layoutY="30.0" prefHeight="20.0" prefWidth="150.0" promptText="Podaj imie" />
-                        <TextField id="Nazwisko" layoutX="115.0" layoutY="60.0" promptText="Podaj Nazwisko" />
-                        <TextField id="Pesel" layoutX="115.0" layoutY="90.0" promptText="Podaj Pesel" />
-                        <TextField id="Adres" layoutX="115.0" layoutY="120.0" promptText="Podaj Adres" />
-                        <TextField id="Miasto" layoutX="115.0" layoutY="150.0" promptText="Podaj Miasto" />
-                        <TextField id="Kod_pocztowy" layoutX="115.0" layoutY="180.0" promptText="Podaj Kod" />
-                        <TextField id="nr_tel" layoutX="115.0" layoutY="210.0" promptText="Podaj nr tel" />
-                        <Button id="rejestracja" layoutX="116.0" layoutY="256.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Rejestruj" />
-                        <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="331.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../../../Downloads/nosacz.jpg" />
-                           </image>
-                        </ImageView>
+                        <Label layoutX="76.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" text="Imie" />
+                        <Label layoutX="76.0" layoutY="68.0" prefHeight="25.0" prefWidth="60.0" text="Nazwisko" />
+                        <Label layoutX="76.0" layoutY="98.0" prefHeight="25.0" prefWidth="60.0" text="Pesel" />
+                        <Label layoutX="76.0" layoutY="128.0" prefHeight="25.0" prefWidth="60.0" text="Adres" />
+                        <Label layoutX="76.0" layoutY="158.0" prefHeight="25.0" prefWidth="60.0" text="Miasto" />
+                        <Label layoutX="76.0" layoutY="188.0" prefHeight="25.0" prefWidth="90.0" text="Kod pocztowy" />
+                        <Label layoutX="76.0" layoutY="218.0" prefHeight="25.0" prefWidth="90.0" text="e-mail" />
+                        <TextField id="Name" layoutX="166.0" layoutY="38.0" prefHeight="20.0" prefWidth="150.0" promptText="Podaj imie" />
+                        <TextField id="Surname" layoutX="166.0" layoutY="68.0" promptText="Podaj Nazwisko" />
+                        <TextField id="Pesel" layoutX="166.0" layoutY="98.0" promptText="Podaj Pesel" />
+                        <TextField id="Adress" layoutX="166.0" layoutY="128.0" promptText="Podaj Adres" />
+                        <TextField id="Town" layoutX="166.0" layoutY="158.0" promptText="Podaj Miasto" />
+                        <TextField id="Post_code" layoutX="166.0" layoutY="188.0" promptText="Podaj Kod" />
+                        <TextField id="E_mail" layoutX="166.0" layoutY="218.0" promptText="Podaj e-mail" />
+                        <Button id="Register_Button" layoutX="76.0" layoutY="264.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="240.0" text="Rejestruj" />
+                        <TableView id="Free_Data_Table" layoutX="369.0" layoutY="31.0" prefHeight="450.0" prefWidth="376.0">
+                           <columns>
+                              <TableColumn id="Free_data_visit" prefWidth="375.0" text="Wolne Daty Wizyt" />
+                           </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Lista">
+          <Tab id="List_Tab" text="Lista">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView id="List_Table" layoutX="15.0" layoutY="57.0" prefHeight="500.0" prefWidth="750.0">
+                          <columns>
+                            <TableColumn id="Name" prefWidth="150.0" text="Imie" />
+                              <TableColumn id="Surname" prefWidth="150.0" text="Nazwisko" />
+                              <TableColumn id="Data_visit" prefWidth="275.0" text="Data wizyty" />
+                              <TableColumn id="Pesel" prefWidth="175.0" text="Pesel" />
+                          </columns>
+                        </TableView>
+                        <Button id="Button_Find_Pesel" layoutX="660.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Znajdz" />
+                        <TextField id="Label_Find_Pesel" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="600.0" promptText="Wpisz pesel" />
+                     </children></AnchorPane>
             </content>
           </Tab>
-            <Tab text="Zmiana terminu">
+            <Tab id="Change_Data_Tab" text="Zmiana terminu">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView id="List_table" layoutX="15.0" layoutY="57.0" prefHeight="450.0" prefWidth="550.0">
+                           <columns>
+                              <TableColumn id="Pesel" prefWidth="125.0" text="Pesel" />
+                              <TableColumn id="Name" prefWidth="125.0" text="Imie" />
+                              <TableColumn id="Surname" prefWidth="125.0" text="Nazwisko" />
+                              <TableColumn id="Data_visit" prefWidth="175.0" text="Data wizyty" />
+                           </columns>
+                        </TableView>
+                        <Button id="Button_Find" layoutX="465.0" layoutY="15.0" mnemonicParsing="false" prefWidth="100.0" text="Znajdz" />
+                        <TextField id="Text_Find" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="430.0" promptText="Podaj pesel" />
+                        <TableView id="Free_Data_Table" layoutX="586.0" layoutY="57.0" prefHeight="450.0" prefWidth="200.0">
+                          <columns>
+                            <TableColumn id="Free_data_visit" prefWidth="200.0" text="Wolne Daty Wizyt" />
+                          </columns>
+                        </TableView>
+                        <Button id="Change_Data_Visit" layoutX="15.0" layoutY="525.0" mnemonicParsing="false" prefWidth="775.0" text="Zmien" />
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
