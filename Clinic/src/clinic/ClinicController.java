@@ -46,14 +46,17 @@ public class ClinicController implements Initializable {
             //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");  
             //dbConn.showList(dbConn.getDoctorsList());
             dbConn.showList(dbConn.getVisitsList());
-            dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("78031541367"), "2018-06-19 11:00:00");
-
+            //dbConn.changeVisitDate(dbConn.getVisitByID("6"), "2018-04-25 11:00:00.0");
+            //dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("78031541367"), "2018-06-19 11:00:00");
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             dbConn.showList(dbConn.getVisitsList());
+            //dbConn.showList(dbConn.getVisitByPatient(dbConn.getPatientByPESEL("84112300687")));
+            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            //dbConn.showList(dbConn.getVisitByPatient(dbConn.getPatientByPESEL("78031541367")));
             //System.out.println(dbConn.getPatientByPESEL("78031541367").print());
             //dbConn.showList(dbConn.getPatientByName("Barbara","Bielan"));
             //System.out.println(dbConn.getDoctorByID("1").print()); 
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             // System.out.println(dbConn.getDoctorByID("1").print());
             //dbConn.showList(dbConn.getDoctorBySpec("Dentysta"));                  
             //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

@@ -81,7 +81,7 @@ public class Visit implements IComponent {
     public Visit(String ID, String ID_Doc, String ID_Pat, String Date, String status) {
         setID(ID);
         setID_Doc(ID_Doc);
-        setID_Pat(ID_Doc);
+        setID_Pat(ID_Pat);
         setDate(Date);
         setStatus(status);
     }

@@ -16,7 +16,7 @@ public class Clinic extends Application {
     
     @Override
     public void start(Stage Stage) throws IOException {
-       Parent root = FXMLLoader.load(getClass().getResource("LoginWindow.fxml"));
+       Parent root = FXMLLoader.load(getClass().getResource("RegisterWindow.fxml"));
        Scene scene = new Scene(root);
        Stage.setScene(scene);
        Stage.setTitle("OKNO LOGOWANIA");

@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `wizyty` (
 -- Zrzut danych tabeli `wizyty`
 --
 
-INSERT INTO `wizyty` (`ID`, `ID_Lekarza`, `ID_Pacjeta`, `Data_Wizyty`, `Status_wizyty`) VALUES
+INSERT INTO `wizyty` (`ID`, `ID_Lekarza`, `ID_Pacjenta`, `Data_Wizyty`, `Status_wizyty`) VALUES
 (1, 1, 3, '2018-04-16 10:00:00', 'Zakonczona'),
 (2, 2, 1, '2018-04-16 10:15:00', 'Przelozona'),
 (3, 2, 1, '2018-06-19 11:00:00', 'Oczekiwana'),
