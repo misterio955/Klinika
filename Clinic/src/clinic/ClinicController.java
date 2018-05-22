@@ -3,6 +3,7 @@ package clinic;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ public class ClinicController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
+
     }
 
     public void connect() {
@@ -44,14 +45,20 @@ public class ClinicController implements Initializable {
             //dbConn.showList(dbConn.getPatientsList());
             //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");  
             //dbConn.showList(dbConn.getDoctorsList());
+            dbConn.showList(dbConn.getVisitsList());
+            dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("78031541367"), "2018-06-19 11:00:00");
 
-            //dbConn.showList(dbConn.getVisitsList());
-            //dbConn.showList(dbConn.getPatientByPESEL("78031541367"));
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            dbConn.showList(dbConn.getVisitsList());
+            //System.out.println(dbConn.getPatientByPESEL("78031541367").print());
             //dbConn.showList(dbConn.getPatientByName("Barbara","Bielan"));
-            //dbConn.showList(dbConn.getDoctorBySpec("Dentysta"));                  //do poprawy
+            //System.out.println(dbConn.getDoctorByID("1").print()); 
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            // System.out.println(dbConn.getDoctorByID("1").print());
+            //dbConn.showList(dbConn.getDoctorBySpec("Dentysta"));                  
             //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //dbConn.showList(dbConn.getDoctorByRoom("2"));                         // do poprawy
-            //dbConn.showList(dbConn.getVisitByDate("2018-06-05 14:00:00.0"));      // do poprawy
+            //dbConn.showList(dbConn.getDoctorByRoom("2"));                         
+            //dbConn.showList(dbConn.getVisitByDate("2018-06-05 14:00:00.0"));      
             //dbConn.showList(dbConn.getDoctorByName("Zbigniew","Kowalski"));
             dbConn.shutdown();
         } catch (SQLException ex) {

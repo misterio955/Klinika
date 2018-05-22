@@ -14,7 +14,6 @@ public class DatabaseConnection {
     private List<Patient> patientsList;
     private List<Doctor> doctorsList;
     private List<Visit> visitsList;
-    //private List<Patient> wynik = new ArrayList<>();
     private final Connection connection;
 
     public DatabaseConnection(String driverClassName, String dbURL, String user, String password) throws SQLException, ClassNotFoundException {
@@ -103,14 +102,14 @@ public class DatabaseConnection {
         return visitsList;
     }
 
-    public List<Patient> getPatientByPESEL(String pesel) {
+    public Patient getPatientByPESEL(String pesel) {
 
-        List<Patient> score = new ArrayList<>();
+        Patient score = null;
 
         for (Patient patient : patientsList) {
 
             if (patient.getPesel().equals(pesel)) {
-                score.add(patient);
+                score = patient;
             }
         }
         return score;
@@ -147,37 +146,47 @@ public class DatabaseConnection {
         List<Doctor> score = new ArrayList<>();
 
         for (Doctor doctor : doctorsList) {
-            System.out.println(doctor.getSpec() + " == " + spec);
-            if (doctor.getSpec().equals(spec));
-            {
+
+            if (doctor.getSpec().equals(spec)) {
                 score.add(doctor);
             }
         }
         return score;
     }
-    
+
+    public Doctor getDoctorByID(String id) {
+
+        List<Doctor> score = new ArrayList<>();
+
+        for (Doctor doctor : doctorsList) {
+
+            if (doctor.getID().equals(id)) {
+                score.add(doctor);
+            }
+        }
+        return score.get(0);
+    }
+
     public List<Doctor> getDoctorByRoom(String room) {
 
         List<Doctor> score = new ArrayList<>();
 
         for (Doctor doctor : doctorsList) {
-            System.out.println(doctor.getRoom() + " == " + room);
-            if (doctor.getRoom().equals(room));
-            {
+
+            if (doctor.getRoom().equals(room)) {
                 score.add(doctor);
             }
         }
         return score;
     }
-    
+
     public List<Visit> getVisitByDate(String date) {
 
         List<Visit> score = new ArrayList<>();
 
         for (Visit visit : visitsList) {
-            
-            if (visit.getDate().equals(date));
-            {
+
+            if (visit.getDate().equals(date)) {
                 score.add(visit);
             }
         }
@@ -191,4 +200,21 @@ public class DatabaseConnection {
         }
     }
 
+    public void registerPatient(String pesel, String firstName, String lastName, String telefon) {
+        Patient patient = new Patient(String.valueOf(patientsList.size() + 1), pesel, firstName, lastName, telefon);
+        patientsList.add(patient);
+    }
+
+    public void registerDoctor(String firstName, String lastName, String password, String spec, String telefon, String room) {
+        Doctor doctor = new Doctor(String.valueOf(doctorsList.size() + 1), firstName, lastName, password, spec, telefon, room);
+        doctorsList.add(doctor);
+    }
+
+    public void createVisit(Doctor doctor, Patient patient, String date) {
+        
+        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
+        //visit.setID_Doc(doc.getID());
+        //visit.setID_Pat(pat.getID());
+        visitsList.add(visit);
+    }
 }
