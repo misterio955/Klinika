@@ -49,7 +49,7 @@ public class RegisterWindowController implements Initializable {
     private TextField textEmailR;
 
     @FXML
-    private void registerButton(ActionEvent e) {
+    private void registerButton(ActionEvent event) {
         if (textNameR.getLength() <= 3) {
             System.out.println("Imie jest za któtkie");
             alert.setTitle("Bląd");
@@ -85,22 +85,10 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private void findPeselP(ActionEvent event) {
         tableListP.getItems().clear();
-
-        boolean isNumbers = false;
-        char[] isNumbersOnly = textFindPeselP.getText().toCharArray();
-
-        //Sprawdzanie czy pesel posiada same liczby
-        for (int i = 0; i < isNumbersOnly.length; i++) {
-            if (isNumbersOnly[i] >= '0' && isNumbersOnly[i] <= '9') {
-                isNumbers = true;
-            } else {
-                isNumbers = false;
-                break;
-            }
-        }
+        String sumString = textFindPeselP.getText();
 
         //Sprawdzenie czy pesel ma 11 znakow i czy jest w bazie
-        if (textFindPeselP.getLength() == 11 && dbConn.getPatientByPESEL(textFindPeselP.getText()) != null && isNumbers == true) {
+        if (textFindPeselP.getLength() == 11 && dbConn.getPatientByPESEL(textFindPeselP.getText()) != null && isNumbersOnly(sumString) == true) {
             Patient patient = dbConn.getPatientByPESEL(textFindPeselP.getText());
 
             tableListP.getItems().add(new Patient(patient.getID(), patient.getPesel(), patient.getImie(), patient.getNazwisko(), patient.getTelefon()));
@@ -123,20 +111,9 @@ public class RegisterWindowController implements Initializable {
     private void findInicialP(ActionEvent event) {
         tableListP.getItems().clear();
 
-        String Help = textFindNameP.getText().toLowerCase() + textFindSurnameP.getText().toLowerCase();
-        char[] isLetterOnly = Help.toCharArray();
-        boolean isLetter = false;
-        //Sprawdzanie czy imie i nazwisko posiada same litery
-        for (int i = 0; i < isLetterOnly.length; i++) {
-            if (isLetterOnly[i] >= 'a' && isLetterOnly[i] <= 'z') {
-                isLetter = true;
-            } else {
-                isLetter = false;
-                break;
-            }
-        }
+        String sumString = textFindNameP.getText().toLowerCase() + textFindSurnameP.getText().toLowerCase();
 
-        if (dbConn.getPatientByName(textFindNameP.getText(), textFindSurnameP.getText()) != null && isLetter == true) {
+        if (dbConn.getPatientByName(textFindNameP.getText(), textFindSurnameP.getText()) != null && isLetterOnly(sumString) == true) {
             List<Patient> patient = dbConn.getPatientByName(textFindNameP.getText(), textFindSurnameP.getText());
 
             for (Patient patientTab : patient) {
@@ -157,9 +134,143 @@ public class RegisterWindowController implements Initializable {
     }
 
     //LIST DOCTOR
+    @FXML
+    TextField textFindNameD;
+    @FXML
+    TextField textFindSurnameD;
+    @FXML
+    TextField textFindSpecializationD;
+    @FXML
+    TextField textFindNrRoomD;
+
+    @FXML
+    private TableView<Doctor> tableListD;
+    @FXML
+    private TableColumn<Doctor, String> columnTableSpecializationD;
+    @FXML
+    private TableColumn<Doctor, String> columnTableNameD;
+    @FXML
+    private TableColumn<Doctor, String> columnTableSurnameD;
+    @FXML
+    private TableColumn<Doctor, String> columnTablePhoneD;
+    @FXML
+    private TableColumn<Doctor, String> columnTableNrRoomD;
+
+    @FXML
+    private void findInciationD(ActionEvent event) {
+        tableListD.getItems().clear();
+        String sumText = textFindNameD.getText().toLowerCase() + textFindSurnameD.getText().toLowerCase();
+        //Sprawdzanie czy jest taki Lekarz w bazie i uzupelnianie tabeli
+        if (dbConn.getDoctorByName(textFindNameD.getText(), textFindSurnameD.getText()) != null && isLetterOnly(sumText) == true) {
+            List<Doctor> doctors = dbConn.getDoctorByName(textFindNameD.getText(), textFindSurnameD.getText());
+
+            for (Doctor doctorTab : doctors) {
+                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getPhone(), doctorTab.getRoom()));
+            }
+
+            columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
+            columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
+            columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
+            columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
+            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        } else {
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Błąd w polu imie lub nazwisko");
+            alert.setContentText("Podane imie lub naziwsko zawiera błąd lub nie ma go w bazie");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void findSpecializationD(ActionEvent event) {
+        tableListD.getItems().clear();
+
+        String sumText = textFindSpecializationD.getText().toLowerCase();
+
+        if (dbConn.getDoctorBySpec(textFindSpecializationD.getText()) != null && isLetterOnly(sumText) == true) {
+            List<Doctor> doctors = dbConn.getDoctorBySpec(textFindSpecializationD.getText());
+
+            for (Doctor doctorTab : doctors) {
+                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getPhone(), doctorTab.getRoom()));
+            }
+
+            columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
+            columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
+            columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
+            columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
+            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        } else {
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Błąd w polu Specjalizacja");
+            alert.setContentText("Podana specjalizacja jest błędna lub nie ma jej bazie");
+            alert.showAndWait();
+        }
+
+    }
+
+    @FXML
+    private void findNrRoomD(ActionEvent event) {
+        tableListD.getItems().clear();
+
+        String sumText = textFindNrRoomD.getText().toLowerCase();
+        System.out.println(isNumbersOnly(sumText));
+        if (dbConn.getDoctorByRoom(textFindNrRoomD.getText()) != null && isNumbersOnly(sumText) == true) {
+            List<Doctor> doctors = dbConn.getDoctorByRoom(textFindNrRoomD.getText());
+
+            for (Doctor doctorTab : doctors) {
+                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getPhone(), doctorTab.getRoom()));
+            }
+
+            columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
+            columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
+            columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
+            columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
+            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        } else {
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Błąd w polu Specjalizacja");
+            alert.setContentText("Podana specjalizacja jest błędna lub nie ma jej bazie");
+            alert.showAndWait();
+        }
+
+    }
 
     //LIST VISIT
 
+
     //DATA VISIT CHANGE
+
+    //METHODS
+    //Sprawdzanie czy są same litery
+    private boolean isLetterOnly(String text1) {
+        boolean isLetter = false;
+        text1.toLowerCase();
+        char[] LetterOnly = text1.toCharArray();
+        for (int i = 0; i < LetterOnly.length; i++) {
+            if (LetterOnly[i] >= 'a' && LetterOnly[i] <= 'z') {
+                isLetter = true;
+            } else {
+                isLetter = false;
+                break;
+            }
+        }
+        return isLetter;
+    }
+
+    //Sprawdzanie czy są same cyfy
+    private boolean isNumbersOnly(String text1) {
+        boolean isNumber = false;
+        char[] NumbersOnly = text1.toCharArray();
+        for (int i = 0; i < NumbersOnly.length; i++) {
+            if (NumbersOnly[i] >= '0' && NumbersOnly[i] <= '9') {
+                isNumber = true;
+            } else {
+                isNumber = false;
+                break;
+            }
+        }
+        return isNumber;
+    }
+
 
 }

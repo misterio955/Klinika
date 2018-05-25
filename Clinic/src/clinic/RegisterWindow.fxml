@@ -60,22 +60,22 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView id="List_Table" layoutX="25.0" layoutY="132.0" prefHeight="425.0" prefWidth="750.0">
+                        <TableView id="List_Table" fx:id="tableListD" layoutX="25.0" layoutY="132.0" prefHeight="425.0" prefWidth="750.0">
                            <columns>
-                              <TableColumn id="Name" prefWidth="150.0" text="Imie" />
-                              <TableColumn id="Surname" prefWidth="150.0" text="Nazwisko" />
-                              <TableColumn id="Specialization" prefWidth="150.0" text="Specjalizacja" />
-                              <TableColumn id="Room_nr" prefWidth="150.0" text="nr pokoju" />
-                              <TableColumn id="Phone_nr" prefWidth="150.0" text="Telefon" />
+                              <TableColumn id="Name" fx:id="columnTableNameD" prefWidth="150.0" text="Imie" />
+                              <TableColumn id="Surname" fx:id="columnTableSurnameD" prefWidth="150.0" text="Nazwisko" />
+                              <TableColumn id="Specialization" fx:id="columnTableSpecializationD" prefWidth="150.0" text="Specjalizacja" />
+                              <TableColumn id="Room_nr" fx:id="columnTableNrRoomD" prefWidth="150.0" text="nr pokoju" />
+                              <TableColumn id="Phone_nr" fx:id="columnTablePhoneD" prefWidth="150.0" text="Telefon" />
                            </columns>
                         </TableView>
-                        <Button fx:id="buttonFindName" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz inicjały" />
-                        <TextField fx:id="textNameFindD" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj imie" />
-                        <TextField fx:id="textSurnameFindD" alignment="TOP_CENTER" layoutX="300.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nazwisko" />
-                        <TextField fx:id="textSpecializationFindD" alignment="TOP_CENTER" layoutX="15.0" layoutY="50.0" prefHeight="25.0" prefWidth="560.0" promptText="Wpisz specjalizacje lekarza" />
-                        <Button fx:id="buttonFindSpecializationD" layoutX="610.0" layoutY="50.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz specjalizacje" />
-                        <TextField fx:id="textRoomFindD" alignment="TOP_CENTER" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nr pokoju" />
-                        <Button fx:id="buttonFindRoomD" layoutX="610.0" layoutY="85.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Znajdz pokój" />
+                        <Button fx:id="buttonFindName" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" onAction="#findInciationD" prefHeight="25.0" prefWidth="150.0" text="Znajdz inicjały" />
+                        <TextField fx:id="textFindNameD" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj imie" />
+                        <TextField fx:id="textFindSurnameD" alignment="TOP_CENTER" layoutX="300.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nazwisko" />
+                        <TextField fx:id="textFindSpecializationD" alignment="TOP_CENTER" layoutX="15.0" layoutY="50.0" prefHeight="25.0" prefWidth="560.0" promptText="Wpisz specjalizacje lekarza" />
+                        <Button fx:id="buttonFindSpecializationD" layoutX="610.0" layoutY="50.0" mnemonicParsing="false" onAction="#findSpecializationD" prefHeight="25.0" prefWidth="150.0" text="Znajdz specjalizacje" />
+                        <TextField fx:id="textFindNrRoomD" alignment="TOP_CENTER" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nr pokoju" />
+                        <Button fx:id="buttonFindRoomD" layoutX="610.0" layoutY="85.0" mnemonicParsing="false" onAction="#findNrRoomD" prefHeight="25.0" prefWidth="150.0" text="Znajdz pokój" />
                      </children>
                   </AnchorPane>
                </content>
