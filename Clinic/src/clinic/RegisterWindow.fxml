@@ -42,11 +42,10 @@
                      <children>
                         <TableView fx:id="tableListP" layoutX="14.0" layoutY="107.0" prefHeight="450.0" prefWidth="750.0">
                           <columns>
-                              <TableColumn id="Pesel" fx:id="columnTableIDP" prefWidth="22.0" text="Id" />
-                              <TableColumn id="Pesel" fx:id="columnTablePeselP" prefWidth="131.0" text="Pesel" />
-                            <TableColumn id="Name" fx:id="columnTableNameP" prefWidth="198.0" text="Imie" />
-                              <TableColumn id="Surname" fx:id="columnTableSurnameP" prefWidth="114.0" text="Nazwisko" />
-                              <TableColumn id="E_mail" fx:id="columnTableEmailP" prefWidth="284.0" text="e-mail" />
+                              <TableColumn id="Pesel" fx:id="columnTablePeselP" prefWidth="100.0" text="Pesel" />
+                            <TableColumn id="Name" fx:id="columnTableNameP" prefWidth="150.0" text="Imie" />
+                              <TableColumn id="Surname" fx:id="columnTableSurnameP" prefWidth="150.0" text="Nazwisko" />
+                              <TableColumn id="E_mail" fx:id="columnTableEmailP" prefWidth="350.0" text="e-mail" />
                           </columns>
                         </TableView>
                         <Button fx:id="buttonFindPeselP" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" onAction="#findPeselP" prefHeight="25.0" prefWidth="150.0" text="Znajdz pesel" />
@@ -85,7 +84,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tableDataVisit" layoutX="25.0" layoutY="14.0" prefHeight="500.0" prefWidth="750.0">
+                        <TableView fx:id="tableDataVisit" layoutX="25.0" layoutY="57.0" prefHeight="500.0" prefWidth="750.0">
                            <columns>
                               <TableColumn id="Name" prefWidth="200.0" text="Imie" />
                               <TableColumn id="Surname" prefWidth="200.0" text="Nazwisko" />
