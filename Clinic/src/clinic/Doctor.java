@@ -16,6 +16,16 @@ public class Doctor implements IComponent{
     
     private final StringProperty ID = new SimpleStringProperty(this, "ID");
 
+     public Doctor (Doctor doctor) {
+        setID(doctor.getID());
+        setImie(doctor.getImie());
+        setNazwisko(doctor.getNazwisko());
+        setPassword(doctor.getPassword());
+        setPhone(doctor.getPhone());
+        setRoom(doctor.getRoom());
+        setSpec(doctor.getSpec());
+    }
+    
     public StringProperty idProperty() {
         return ID;
     }

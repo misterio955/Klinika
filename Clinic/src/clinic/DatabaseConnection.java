@@ -14,8 +14,11 @@ import javax.swing.JOptionPane;
 public class DatabaseConnection {
 
     private List<Patient> patientsList;
+    private final List<Patient> patientsListCopy = new ArrayList<>();
     private List<Doctor> doctorsList;
+    private final List<Doctor> doctorsListCopy = new ArrayList<>();
     private List<Visit> visitsList;
+    private final List<Visit> visitsListCopy = new ArrayList<>();
     private final Connection connection;
 
     public DatabaseConnection(String driverClassName, String dbURL, String user, String password) throws SQLException, ClassNotFoundException {
@@ -35,6 +38,30 @@ public class DatabaseConnection {
         for (IComponent component : lista) {
             System.out.println(component.print());
         }
+    }
+
+    public void updateCopyLists() {
+
+        for (Patient patient : patientsList) {
+            Patient copyPatient = new Patient(patient);
+            patientsListCopy.add(copyPatient);
+        }
+
+        for (Doctor doctor : doctorsList) {
+            Doctor copyDoctor = new Doctor(doctor);
+            doctorsListCopy.add(copyDoctor);
+        }
+        for (Visit visit : visitsList) {
+            Visit copyVisit = new Visit(visit);
+            visitsListCopy.add(copyVisit);
+        }
+    }
+
+    public void compareLists() {
+        comparePatients();
+        compareDoctors();
+        compareVisits();
+        updateCopyLists();
     }
 
 // PATIENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,6 +86,7 @@ public class DatabaseConnection {
     public List<Patient> getPatientsList() {
 
         return patientsList;
+
     }
 
     public Patient getPatientByPESEL(String pesel) {
@@ -88,20 +116,49 @@ public class DatabaseConnection {
     }
 
     public void registerPatient(String pesel, String firstName, String lastName, String telefon) {
-        String id = String.valueOf(patientsList.size() + 1);
-        Patient patient = new Patient(id, pesel, firstName, lastName, telefon);
+        Patient patient = new Patient(String.valueOf(patientsList.size() + 1), pesel, firstName, lastName, telefon);
         patientsList.add(patient);
-        try {
-            String query = "INSERT INTO Pacjenci VALUES ('" + id + "', '" + pesel + "', '" + firstName + "', '" + lastName + "', '" + telefon + "');";
-            Statement stmnt = connection.createStatement();
-            int rs = stmnt.executeUpdate(query);
-            if (rs > 0) {
-                JOptionPane.showMessageDialog(null, "Zarejestrowano pacjenta pomyślnie.");
+    }
+
+    public void comparePatients() {
+        for (int i = 0; i < patientsList.size(); i++) {
+
+            if (i < patientsListCopy.size()) {
+                if (!patientsList.get(i).print().equals(patientsListCopy.get(i).print())) {
+
+                    try {
+                        String query = "UPDATE pacjenci SET ID = '" + patientsList.get(i).getID() + "', Pesel = '" + patientsList.get(i).getPesel()
+                                + "', Imie = '" + patientsList.get(i).getImie() + "', Nazwisko = '" + patientsList.get(i).getNazwisko() + "', Telefon = '" + patientsList.get(i).getTelefon()
+                                + "' WHERE ID = '" + patientsList.get(i).getID() + "';";
+                        Statement stmnt = connection.createStatement();
+                        int rs = stmnt.executeUpdate(query);
+                        if (rs > 0) {
+                            JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
+                        }
+                        System.out.println(query);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
             } else {
-                JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas dodawania rekordu.");
+                try {
+                    String query = "INSERT INTO Pacjenci VALUES ('" + patientsList.get(i).getID() + "', '" + patientsList.get(i).getPesel() + "', '" + patientsList.get(i).getImie() + "', '" + patientsList.get(i).getNazwisko() + "', '" + patientsList.get(i).getTelefon() + "');";
+                    Statement stmnt = connection.createStatement();
+                    int rs = stmnt.executeUpdate(query);
+                    if (rs > 0) {
+                        //JOptionPane.showMessageDialog(null, "Zarejestrowano pacjenta pomyślnie.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas dodawania rekordu.");
+
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -186,25 +243,55 @@ public class DatabaseConnection {
     }
 
     public void registerDoctor(String firstName, String lastName, String password, String spec, String telefon, String room) {
-        String id = String.valueOf(doctorsList.size() + 1);
-        Doctor doctor = new Doctor(id, firstName, lastName, password, spec, telefon, room);
+        Doctor doctor = new Doctor(String.valueOf(doctorsList.size() + 1), firstName, lastName, password, spec, telefon, room);
         doctorsList.add(doctor);
-        
-         try {
-            String query = "INSERT INTO Lekarze VALUES ('" + id + "', '" + firstName + "', '" + lastName + "', '" + password + "', '" + spec + "', '"+ telefon + "', '"+ room + "');";
-            Statement stmnt = connection.createStatement();
-            int rs = stmnt.executeUpdate(query);
-            if (rs > 0) {
-                JOptionPane.showMessageDialog(null, "Dodano nowego lekarza.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas dodawania rekordu.");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
+    public void compareDoctors() {
+        for (int i = 0; i < doctorsList.size(); i++) {
+
+            if (i < doctorsListCopy.size()) {
+                if (!doctorsList.get(i).print().equals(doctorsListCopy.get(i).print())) {
+
+                    try {
+                        String query = "UPDATE lekarze SET ID = '" + doctorsList.get(i).getID() + "', Imie = '" + doctorsList.get(i).getImie()
+                                + "', Nazwisko = '" + doctorsList.get(i).getNazwisko() + "', Haslo = '" + doctorsList.get(i).getPassword() + "', Specjalizacja = '" + doctorsList.get(i).getSpec() + "', Telefon = '" + doctorsList.get(i).getPhone()
+                                + "', Sala = '" + doctorsList.get(i).getRoom() + "' WHERE ID = '" + doctorsList.get(i).getID() + "';";
+                        Statement stmnt = connection.createStatement();
+                        int rs = stmnt.executeUpdate(query);
+                        if (rs > 0) {
+                            JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
+                        }
+                        // System.out.println(query);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            } else {
+                try {
+                    String query = "INSERT INTO Lekarze VALUES ('" + doctorsList.get(i).getID() + "', '" + doctorsList.get(i).getImie() + "', '"
+                            + doctorsList.get(i).getNazwisko() + "', '" + doctorsList.get(i).getPassword() + "', '" + doctorsList.get(i).getSpec() + "', '" + doctorsList.get(i).getPhone() + "', '" + doctorsList.get(i).getRoom() + "');";
+                    Statement stmnt = connection.createStatement();
+                    int rs = stmnt.executeUpdate(query);
+                    if (rs > 0) {
+                        //JOptionPane.showMessageDialog(null, "Zarejestrowano pacjenta pomyślnie.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas dodawania rekordu.");
+
+                    }
+                    // System.out.println(query);
+                } catch (SQLException ex) {
+                    Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 // VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+
     public void setVisitsList() throws SQLException {
         try (
                 Statement stmnt = connection.createStatement();
@@ -254,22 +341,9 @@ public class DatabaseConnection {
     }
 
     public void createVisit(Doctor doctor, Patient patient, String date) {
-        String id = String.valueOf(visitsList.size() + 1);
-        Visit visit = new Visit(id, doctor.getID(), patient.getID(), date, "Oczekiwana");
+
+        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
         visitsList.add(visit);
-        
-         try {
-            String query = "INSERT INTO Wizyty VALUES ('" + id + "', '" + doctor.getID() + "', '" + patient.getID() + "', '" + date + "', 'Oczekiwana');";
-            Statement stmnt = connection.createStatement();
-            int rs = stmnt.executeUpdate(query);
-            if (rs > 0) {
-                JOptionPane.showMessageDialog(null, "Dodano nową wizytę.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas dodawania rekordu.");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public Visit getVisitByID(String id) {
@@ -288,38 +362,51 @@ public class DatabaseConnection {
     public void changeVisitDate(Visit visit, String date) {
         visit.setDate(date);
         visit.setStatus("Przelozona");
-        String id = visit.getID();
-        
-        try {
-            String query = "UPDATE Wizyty SET Data_Wizyty = '"+ date + "', Status_wizyty = 'Oczekiwana' WHERE ID = '"+id+"';";
-            Statement stmnt = connection.createStatement();
-            int rs = stmnt.executeUpdate(query);
-            if (rs > 0) {
-                JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void changeVisitStatus(Visit visit, String status) {
-        visit.setStatus(status);
-        String id = visit.getID();
-        
-        try {
-            String query = "UPDATE Wizyty SET Status_wizyty = '"+status+"' WHERE ID = '"+id+"';";
-            Statement stmnt = connection.createStatement();
-            int rs = stmnt.executeUpdate(query);
-            if (rs > 0) {
-                JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
+    public void compareVisits() {
+        for (int i = 0; i < visitsList.size(); i++) {
+
+            if (i < visitsListCopy.size()) {
+                if (!visitsList.get(i).print().equals(visitsListCopy.get(i).print())) {
+
+                    try {
+                        String query = "UPDATE wizyty SET ID = '" + visitsList.get(i).getID() + "', ID_Lekarza= '" + visitsList.get(i).getID_Doc()
+                                + "', ID_Pacjenta = '" + visitsList.get(i).getID_Pat() + "', Data_Wizyty = '" + visitsList.get(i).getDate() + "', Status_Wizyty = '" + visitsList.get(i).getStatus()
+                                + "' WHERE ID = '" + visitsList.get(i).getID() + "';";
+                        Statement stmnt = connection.createStatement();
+                        int rs = stmnt.executeUpdate(query);
+                        if (rs > 0) {
+                            JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
+                        }
+                        // System.out.println(query);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            } else {
+                try {
+                    String query = "INSERT INTO Wizyty VALUES ('" + visitsList.get(i).getID() + "', '"
+                            + visitsList.get(i).getID_Doc() + "', '" + visitsList.get(i).getID_Pat() + "', '"
+                            + visitsList.get(i).getDate() + "', '" + visitsList.get(i).getStatus() + "');";
+                    Statement stmnt = connection.createStatement();
+                    int rs = stmnt.executeUpdate(query);
+
+                    if (rs > 0) {
+                        //JOptionPane.showMessageDialog(null, "Zarejestrowano pacjenta pomyślnie.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas dodawania rekordu.");
+
+                    }
+                    //System.out.println(query);
+                } catch (SQLException ex) {
+                    Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

@@ -7,6 +7,14 @@ public class Patient implements IComponent{
 
     private final StringProperty ID = new SimpleStringProperty(this, "ID");
 
+    public Patient(Patient patient) {
+        setID(patient.getID());
+        setImie(patient.getImie());
+        setNazwisko(patient.getNazwisko());
+        setPesel(patient.getPesel());
+        setTelefon(patient.getTelefon());
+    }
+    
     public StringProperty idProperty() {
         return ID;
     }

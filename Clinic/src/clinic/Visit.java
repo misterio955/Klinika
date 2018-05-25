@@ -9,6 +9,14 @@ public class Visit implements IComponent {
     
     private final StringProperty ID = new SimpleStringProperty(this, "ID");
 
+    public Visit (Visit visit) {
+        setID(visit.getID());
+        setID_Doc(visit.getID_Doc());
+        setID_Pat(visit.getID_Pat());
+        setDate(visit.getDate());
+        setStatus(visit.getStatus());
+    }
+    
     public StringProperty idProperty() {
         return ID;
     }
