@@ -120,6 +120,13 @@ public class Doctor implements IComponent{
         setSpec(spec);
         setPhone(telefon);
         setRoom(room);
+    }public Doctor(String ID, String firstName, String lastName, String spec,  String telefon, String room) {
+        setID(ID);
+        setImie(firstName);
+        setNazwisko(lastName);
+        setSpec(spec);
+        setPhone(telefon);
+        setRoom(room);
     }
 
     
