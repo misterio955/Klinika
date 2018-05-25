@@ -1,23 +1,23 @@
 package clinic;
 
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class ClinicController implements Initializable {
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+
+public class ClinicController implements Initializable {
     DatabaseConnection dbConn;
 
     @Override
@@ -27,7 +27,7 @@ public class ClinicController implements Initializable {
 
     public void connect() {
         try {
-            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
             System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
@@ -51,16 +51,16 @@ public class ClinicController implements Initializable {
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             dbConn.showList(dbConn.getVisitsList());
             //dbConn.showList(dbConn.getVisitByPatient(dbConn.getPatientByPESEL("84112300687")));
-            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //dbConn.showList(dbConn.getVisitByPatient(dbConn.getPatientByPESEL("78031541367")));
-            //System.out.println(dbConn.getPatientByPESEL("78031541367").print());
-            //dbConn.showList(dbConn.getPatientByName("Barbara","Bielan"));
-            //System.out.println(dbConn.getDoctorByID("1").print()); 
-            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            // System.out.println(dbConn.getDoctorByID("1").print());
-            //dbConn.showList(dbConn.getDoctorBySpec("Dentysta"));                  
-            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //dbConn.showList(dbConn.getDoctorByRoom("2"));                         
+            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            //            //dbConn.showList(dbConn.getVisitByPatient(dbConn.getPatientByPESEL("78031541367")));
+            //            //System.out.println(dbConn.getPatientByPESEL("78031541367").print());
+            //            //dbConn.showList(dbConn.getPatientByName("Barbara","Bielan"));
+            //            //System.out.println(dbConn.getDoctorByID("1").print());
+            //            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            //            // System.out.println(dbConn.getDoctorByID("1").print());
+            //            //dbConn.showList(dbConn.getDoctorBySpec("Dentysta"));
+            //            //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            //            //dbConn.showList(dbConn.getDoctorByRoom("2"));                         ~~~~~~~~~~
             //dbConn.showList(dbConn.getVisitByDate("2018-06-05 14:00:00.0"));      
             //dbConn.showList(dbConn.getDoctorByName("Zbigniew","Kowalski"));
             dbConn.shutdown();
