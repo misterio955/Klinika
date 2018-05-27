@@ -306,8 +306,7 @@ public class DatabaseConnection {
                 String Date = rs.getString("Data_Wizyty");
                 String Status = rs.getString("Status_wizyty");
                 Visit visit = new Visit(ID, ID_Doc, ID_Pat, Date, Status);
-                Date date = new Date(visit.getDate());
-                addDate(Date);
+                addDate(Date,getDoctorByID(ID_Doc));
                 visitList.add(visit);
             }
             this.visitsList = visitList;
@@ -349,7 +348,7 @@ public class DatabaseConnection {
 
         Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
         visitsList.add(visit);
-        addDate(date);
+        addDate(date, doctor);
 
     }
 
@@ -423,12 +422,12 @@ public class DatabaseConnection {
         return datesList;
     }
 
-    public void addDate(String date) {
+    public void addDate(String date , Doctor doctor) {
 
-        Date newDate = new Date(date);
+        Date newDate = new Date(date, doctor);
         int i = 0;
         for (Date aDate : datesList) {
-            if (aDate.getDay().equals(date.substring(0, 10))) {
+            if (aDate.getDay().equals(date.substring(0, 10)) && aDate.getDoctor().equals(doctor)) {
                 addHourToDate(datesList.get(i), date.substring(11, 19));
                 i--;
                 break;

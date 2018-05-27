@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class Date implements IComponent {
 
-    
     private String day;
+    private Doctor doctor;
     private List<String> hours = new ArrayList<>();
     private final List<String> hoursBusy = new ArrayList<>();
 
@@ -57,17 +57,21 @@ public class Date implements IComponent {
         }
         return hours;
     }
-    
-    public Date(String date) {
-        
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public Date(String date, Doctor doctor) {
+        this.doctor = doctor;
         this.day = date.substring(0, 10);
         this.hours = setHours(hours);
     }
-    
-    public void addBusyHour(String hour){
-       hoursBusy.add(hour);
+
+    public void addBusyHour(String hour) {
+        hoursBusy.add(hour);
     }
-    
+
     public List<String> getHoursBusy() {
         return hoursBusy;
     }
@@ -76,8 +80,6 @@ public class Date implements IComponent {
         hours.removeAll(hoursBusy);
         return hours;
     }
-    
-    
 
     public void setDay(String day) {
         this.day = day;
@@ -93,6 +95,6 @@ public class Date implements IComponent {
 
     @Override
     public String print() {
-        return getDay() +" "+getHoursBusy();
+        return getDoctor().getID() +"   "+getDay() + "  " + getHoursBusy();
     }
 }
