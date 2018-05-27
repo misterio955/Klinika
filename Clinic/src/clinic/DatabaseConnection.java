@@ -19,6 +19,7 @@ public class DatabaseConnection {
     private final List<Doctor> doctorsListCopy = new ArrayList<>();
     private List<Visit> visitsList;
     private final List<Visit> visitsListCopy = new ArrayList<>();
+    private final List<Date> datesList = new ArrayList<>();
     private final Connection connection;
 
     public DatabaseConnection(String driverClassName, String dbURL, String user, String password) throws SQLException, ClassNotFoundException {
@@ -290,13 +291,14 @@ public class DatabaseConnection {
             }
         }
     }
-// VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
 
+// VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
     public void setVisitsList() throws SQLException {
         try (
                 Statement stmnt = connection.createStatement();
                 ResultSet rs = stmnt.executeQuery("select * from wizyty");) {
             List<Visit> visitList = new ArrayList<>();
+            List<Date> dateList = new ArrayList<>();
             while (rs.next()) {
                 String ID = rs.getString("ID");
                 String ID_Doc = rs.getString("ID_Lekarza");
@@ -304,15 +306,18 @@ public class DatabaseConnection {
                 String Date = rs.getString("Data_Wizyty");
                 String Status = rs.getString("Status_wizyty");
                 Visit visit = new Visit(ID, ID_Doc, ID_Pat, Date, Status);
+                Date date = new Date(visit.getDate());
+                addDate(Date);
                 visitList.add(visit);
-                //  System.out.println(visit.print());
             }
             this.visitsList = visitList;
         }
     }
 
     public List<Visit> getVisitsList() {
-
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~a");
+        showList(visitsListCopy);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~b");
         return visitsList;
     }
 
@@ -344,6 +349,8 @@ public class DatabaseConnection {
 
         Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
         visitsList.add(visit);
+        addDate(date);
+
     }
 
     public Visit getVisitByID(String id) {
@@ -409,4 +416,55 @@ public class DatabaseConnection {
             }
         }
     }
+
+//DATES
+    public List<Date> getDatesList() {
+
+        return datesList;
+    }
+
+    public void addDate(String date) {
+
+        Date newDate = new Date(date);
+        int i = 0;
+        for (Date aDate : datesList) {
+            if (aDate.getDay().equals(date.substring(0, 10))) {
+                addHourToDate(datesList.get(i), date.substring(11, 19));
+                i--;
+                break;
+            } else {
+                i++;
+            }
+        }
+        if (i == datesList.size()) {
+            datesList.add(newDate);
+            addHourToDate(newDate, date.substring(11, 19));
+        }
+    }
+
+    public void addHourToDate(Date date, String hour) {
+        date.addBusyHour(hour);
+
+    }
+
+    public List<String> getBusyHoursFromDate(Date date) {
+        return date.getHoursBusy();
+    }
+
+    public List<String> getFreeHoursFromDate(Date date) {
+        return date.getHoursFree();
+    }
+    
+    public Date getDateByDay(String day){
+        Date score = null;
+
+        for (Date date : datesList) {
+
+            if (date.getDay().equals(day)) {
+                score = date;
+            }
+        }
+        return score;
+    }
+
 }
