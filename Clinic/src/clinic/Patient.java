@@ -12,7 +12,7 @@ public class Patient implements IComponent{
         setImie(patient.getImie());
         setNazwisko(patient.getNazwisko());
         setPesel(patient.getPesel());
-        setTelefon(patient.getTelefon());
+        setEmail(patient.getEmail());
     }
     
     public StringProperty idProperty() {
@@ -70,30 +70,30 @@ public class Patient implements IComponent{
     }
 
  
-    private final StringProperty telefon = new SimpleStringProperty(this, "Telefon");
+    private final StringProperty email = new SimpleStringProperty(this, "Email");
 
-    public StringProperty telefonProperty() {
-        return telefon;
+    public StringProperty emailProperty() {
+        return email;
     }
 
-    public final String getTelefon() {
-        return telefonProperty().get();
+    public final String getEmail() {
+        return emailProperty().get();
     }
 
-    public final void setTelefon(String phone) {
-        telefonProperty().set(phone);
+    public final void setEmail(String email) {
+        emailProperty().set(email);
     }
 
-    public Patient(String ID, String pesel, String firstName, String lastName,  String telefon) {
+    public Patient(String ID, String pesel, String firstName, String lastName,  String email) {
         setID(ID);
         setImie(firstName);
         setNazwisko(lastName);
         setPesel(pesel);
-        setTelefon(telefon);
+        setEmail(email);
     }
 
     public String print() {
-        return "ID=" + getID() + ", pesel=" + getPesel() + ", imie=" + getImie() + ", nazwisko=" + getNazwisko() +  ", telefon=" + getTelefon();
+        return "ID=" + getID() + ", pesel=" + getPesel() + ", imie=" + getImie() + ", nazwisko=" + getNazwisko() +  ", telefon=" + getEmail();
     }
 
 }

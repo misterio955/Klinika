@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `lekarze` (
   `Nazwisko` varchar(50) COLLATE utf8_polish_ci NOT NULL,
   `Haslo` varchar(16) COLLATE utf8_polish_ci NOT NULL,
   `Specjalizacja` varchar(200) COLLATE utf8_polish_ci NOT NULL,
-  `Telefon` varchar(9) COLLATE utf8_polish_ci NOT NULL,
+  `Email` varchar(30) COLLATE utf8_polish_ci NOT NULL,
   `Sala` int(3) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS `lekarze` (
 -- Zrzut danych tabeli `lekarze`
 --
 
-INSERT INTO `lekarze` (`ID`, `Imie`, `Nazwisko`, `Haslo`, `Specjalizacja`, `Telefon`, `Sala`) VALUES
-(1, 'Janusz', 'Korwin', 'jkorwin', 'Urolog', '541238401', 4),
-(2, 'Zbigniew', 'Kowalski', 'zkowalski', 'Dentysta', '886124793', 2);
+INSERT INTO `lekarze` (`ID`, `Imie`, `Nazwisko`, `Haslo`, `Specjalizacja`, `Email`, `Sala`) VALUES
+(1, 'Janusz', 'Korwin', 'jkorwin', 'Urolog', 'jkowrin@emial.com', 4),
+(2, 'Zbigniew', 'Kowalski', 'zkowalski', 'Dentysta', 'zkowalski@gmail.com', 2);
 
 -- --------------------------------------------------------
 
@@ -55,18 +55,18 @@ CREATE TABLE IF NOT EXISTS `pacjenci` (
   `Pesel` varchar(11) COLLATE utf8_polish_ci NOT NULL,
   `Imie` varchar(50) COLLATE utf8_polish_ci NOT NULL,
   `Nazwisko` varchar(50) COLLATE utf8_polish_ci NOT NULL,
-  `Telefon` varchar(50) COLLATE utf8_polish_ci NOT NULL
+  `Email` varchar(50) COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Zrzut danych tabeli `pacjenci`
 --
 
-INSERT INTO `pacjenci` (`ID`, `Pesel`, `Imie`, `Nazwisko`, `Telefon`) VALUES
-(1, '84112300687', 'Zaneta', 'Chowaniec', '554129743'),
-(2, '80012236149', 'Bogdan', 'Skucha', '801704665'),
-(3, '78031541367', 'Barbara', 'Bielan', '701654901'),
-(4, '98120622313', 'Rafal', 'Dziura', '541368712');
+INSERT INTO `pacjenci` (`ID`, `Pesel`, `Imie`, `Nazwisko`, `Email`) VALUES
+(1, '84112300687', 'Zaneta', 'Chowaniec', 'zchowaniec@gmail.com'),
+(2, '80012236149', 'Bogdan', 'Skucha', 'Skucha@gmail.com'),
+(3, '78031541367', 'Barbara', 'Bielan', 'Bielan@gmail.com'),
+(4, '98120622313', 'Rafal', 'Dziura', 'Dziura@gmail.com');
 
 -- --------------------------------------------------------
 

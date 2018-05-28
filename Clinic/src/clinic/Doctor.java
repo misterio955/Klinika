@@ -21,7 +21,7 @@ public class Doctor implements IComponent{
         setImie(doctor.getImie());
         setNazwisko(doctor.getNazwisko());
         setPassword(doctor.getPassword());
-        setPhone(doctor.getPhone());
+        setEmail(doctor.getEmail());
         setRoom(doctor.getRoom());
         setSpec(doctor.getSpec());
     }
@@ -94,18 +94,18 @@ public class Doctor implements IComponent{
         specjalizacjaProperty().set(spec);
     }
     
-    private final StringProperty telefon = new SimpleStringProperty(this, "Telefon");
+    private final StringProperty email = new SimpleStringProperty(this, "Email");
 
-    public StringProperty telefonProperty() {
-        return telefon;
+    public StringProperty emailProperty() {
+        return email;
     }
 
-    public final String getPhone() {
-        return telefonProperty().get();
+    public final String getEmail() {
+        return emailProperty().get();
     }
 
-    public final void setPhone(String phone) {
-        telefonProperty().set(phone);
+    public final void setEmail(String email) {
+        emailProperty().set(email);
     }
 
     private final StringProperty sala = new SimpleStringProperty(this, "Sala");
@@ -122,26 +122,26 @@ public class Doctor implements IComponent{
         salaProperty().set(sala);
     }
 
-   public Doctor(String ID, String firstName, String lastName, String password, String spec,  String telefon, String room) {
+   public Doctor(String ID, String firstName, String lastName, String password, String spec,  String email, String room) {
         setID(ID);
         setImie(firstName);
         setNazwisko(lastName);
         setPassword(password);
         setSpec(spec);
-        setPhone(telefon);
+        setEmail(email);
         setRoom(room);
-    }public Doctor(String ID, String firstName, String lastName, String spec,  String telefon, String room) {
+    }public Doctor(String ID, String firstName, String lastName, String spec,  String email, String room) {
         setID(ID);
         setImie(firstName);
         setNazwisko(lastName);
         setSpec(spec);
-        setPhone(telefon);
+        setEmail(email);
         setRoom(room);
     }
 
     
     public String print() {
-        return "ID=" + getID() + ", imie=" + getImie() + ", nazwisko=" + getNazwisko() + ", haslo=" + getPassword() + ", specjalizacja=" + getSpec() + ", telefon=" + getPhone() + ", sala=" + getRoom();
+        return "ID=" + getID() + ", imie=" + getImie() + ", nazwisko=" + getNazwisko() + ", haslo=" + getPassword() + ", specjalizacja=" + getSpec() + ", email=" + getEmail() + ", sala=" + getRoom();
     }
    
     

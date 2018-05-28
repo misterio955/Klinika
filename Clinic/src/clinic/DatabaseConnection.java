@@ -76,8 +76,8 @@ public class DatabaseConnection {
                 String Pesel = rs.getString("Pesel");
                 String Imie = rs.getString("Imie");
                 String Nazwisko = rs.getString("Nazwisko");
-                String Telefon = rs.getString("telefon");
-                Patient patient = new Patient(ID, Pesel, Imie, Nazwisko, Telefon);
+                String Email = rs.getString("Email");
+                Patient patient = new Patient(ID, Pesel, Imie, Nazwisko, Email);
                 patientList.add(patient);
             }
             this.patientsList = patientList;
@@ -116,8 +116,8 @@ public class DatabaseConnection {
         return score;
     }
 
-    public void registerPatient(String pesel, String firstName, String lastName, String telefon) {
-        Patient patient = new Patient(String.valueOf(patientsList.size() + 1), pesel, firstName, lastName, telefon);
+    public void registerPatient(String pesel, String firstName, String lastName, String email) {
+        Patient patient = new Patient(String.valueOf(patientsList.size() + 1), pesel, firstName, lastName, email);
         patientsList.add(patient);
     }
 
@@ -129,7 +129,7 @@ public class DatabaseConnection {
 
                     try {
                         String query = "UPDATE pacjenci SET ID = '" + patientsList.get(i).getID() + "', Pesel = '" + patientsList.get(i).getPesel()
-                                + "', Imie = '" + patientsList.get(i).getImie() + "', Nazwisko = '" + patientsList.get(i).getNazwisko() + "', Telefon = '" + patientsList.get(i).getTelefon()
+                                + "', Imie = '" + patientsList.get(i).getImie() + "', Nazwisko = '" + patientsList.get(i).getNazwisko() + "', Email = '" + patientsList.get(i).getEmail()
                                 + "' WHERE ID = '" + patientsList.get(i).getID() + "';";
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
@@ -147,7 +147,7 @@ public class DatabaseConnection {
 
             } else {
                 try {
-                    String query = "INSERT INTO Pacjenci VALUES ('" + patientsList.get(i).getID() + "', '" + patientsList.get(i).getPesel() + "', '" + patientsList.get(i).getImie() + "', '" + patientsList.get(i).getNazwisko() + "', '" + patientsList.get(i).getTelefon() + "');";
+                    String query = "INSERT INTO Pacjenci VALUES ('" + patientsList.get(i).getID() + "', '" + patientsList.get(i).getPesel() + "', '" + patientsList.get(i).getImie() + "', '" + patientsList.get(i).getNazwisko() + "', '" + patientsList.get(i).getEmail() + "');";
                     Statement stmnt = connection.createStatement();
                     int rs = stmnt.executeUpdate(query);
                     if (rs > 0) {
@@ -176,9 +176,9 @@ public class DatabaseConnection {
                 String Nazwisko = rs.getString("Nazwisko");
                 String Password = rs.getString("Haslo");
                 String Spec = rs.getString("Specjalizacja");
-                String Telefon = rs.getString("Telefon");
+                String Email = rs.getString("Email");
                 String Sala = rs.getString("Sala");
-                Doctor doctor = new Doctor(ID, Imie, Nazwisko, Password, Spec, Telefon, Sala);
+                Doctor doctor = new Doctor(ID, Imie, Nazwisko, Password, Spec, Email, Sala);
                 doctorList.add(doctor);
                 // System.out.println(doctor.print());
             }
@@ -243,8 +243,8 @@ public class DatabaseConnection {
         return score;
     }
 
-    public void registerDoctor(String firstName, String lastName, String password, String spec, String telefon, String room) {
-        Doctor doctor = new Doctor(String.valueOf(doctorsList.size() + 1), firstName, lastName, password, spec, telefon, room);
+    public void registerDoctor(String firstName, String lastName, String password, String spec, String email, String room) {
+        Doctor doctor = new Doctor(String.valueOf(doctorsList.size() + 1), firstName, lastName, password, spec, email, room);
         doctorsList.add(doctor);
     }
 
@@ -256,7 +256,7 @@ public class DatabaseConnection {
 
                     try {
                         String query = "UPDATE lekarze SET ID = '" + doctorsList.get(i).getID() + "', Imie = '" + doctorsList.get(i).getImie()
-                                + "', Nazwisko = '" + doctorsList.get(i).getNazwisko() + "', Haslo = '" + doctorsList.get(i).getPassword() + "', Specjalizacja = '" + doctorsList.get(i).getSpec() + "', Telefon = '" + doctorsList.get(i).getPhone()
+                                + "', Nazwisko = '" + doctorsList.get(i).getNazwisko() + "', Haslo = '" + doctorsList.get(i).getPassword() + "', Specjalizacja = '" + doctorsList.get(i).getSpec() + "', Email = '" + doctorsList.get(i).getEmail()
                                 + "', Sala = '" + doctorsList.get(i).getRoom() + "' WHERE ID = '" + doctorsList.get(i).getID() + "';";
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
@@ -275,7 +275,7 @@ public class DatabaseConnection {
             } else {
                 try {
                     String query = "INSERT INTO Lekarze VALUES ('" + doctorsList.get(i).getID() + "', '" + doctorsList.get(i).getImie() + "', '"
-                            + doctorsList.get(i).getNazwisko() + "', '" + doctorsList.get(i).getPassword() + "', '" + doctorsList.get(i).getSpec() + "', '" + doctorsList.get(i).getPhone() + "', '" + doctorsList.get(i).getRoom() + "');";
+                            + doctorsList.get(i).getNazwisko() + "', '" + doctorsList.get(i).getPassword() + "', '" + doctorsList.get(i).getSpec() + "', '" + doctorsList.get(i).getEmail() + "', '" + doctorsList.get(i).getRoom() + "');";
                     Statement stmnt = connection.createStatement();
                     int rs = stmnt.executeUpdate(query);
                     if (rs > 0) {

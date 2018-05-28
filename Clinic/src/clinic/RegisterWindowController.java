@@ -16,20 +16,21 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class RegisterWindowController implements Initializable {
+
     private Alert alert = new Alert(Alert.AlertType.WARNING);
     private DatabaseConnection dbConn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/baza_klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
 
             System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
             dbConn.setVisitsList();
+            dbConn.updateCopyLists();
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(RegisterWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,12 +92,12 @@ public class RegisterWindowController implements Initializable {
         if (textFindPeselP.getLength() == 11 && dbConn.getPatientByPESEL(textFindPeselP.getText()) != null && isNumbersOnly(sumString) == true) {
             Patient patient = dbConn.getPatientByPESEL(textFindPeselP.getText());
 
-            tableListP.getItems().add(new Patient(patient.getID(), patient.getPesel(), patient.getImie(), patient.getNazwisko(), patient.getTelefon()));
+            tableListP.getItems().add(new Patient(patient.getID(), patient.getPesel(), patient.getImie(), patient.getNazwisko(), patient.getEmail()));
 
             columnTablePeselP.setCellValueFactory(new PropertyValueFactory<>("Pesel"));
             columnTableNameP.setCellValueFactory(new PropertyValueFactory<>("Imie"));
             columnTableSurnameP.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
-            columnTableEmailP.setCellValueFactory(new PropertyValueFactory<>("Telefon"));
+            columnTableEmailP.setCellValueFactory(new PropertyValueFactory<>("Email"));
         } else {
             alert.setTitle("Nieprawidłowa długość peselu");
             alert.setHeaderText("Błąd w polu pesel");
@@ -117,13 +118,13 @@ public class RegisterWindowController implements Initializable {
             List<Patient> patient = dbConn.getPatientByName(textFindNameP.getText(), textFindSurnameP.getText());
 
             for (Patient patientTab : patient) {
-                tableListP.getItems().add(new Patient(patientTab.getID(), patientTab.getPesel(), patientTab.getImie(), patientTab.getNazwisko(), patientTab.getTelefon()));
+                tableListP.getItems().add(new Patient(patientTab.getID(), patientTab.getPesel(), patientTab.getImie(), patientTab.getNazwisko(), patientTab.getEmail()));
             }
 
             columnTablePeselP.setCellValueFactory(new PropertyValueFactory<>("Pesel"));
             columnTableNameP.setCellValueFactory(new PropertyValueFactory<>("Imie"));
             columnTableSurnameP.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
-            columnTableEmailP.setCellValueFactory(new PropertyValueFactory<>("Telefon"));
+            columnTableEmailP.setCellValueFactory(new PropertyValueFactory<>("Email"));
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Błąd w polu imie lub nazwisko");
@@ -165,14 +166,14 @@ public class RegisterWindowController implements Initializable {
             List<Doctor> doctors = dbConn.getDoctorByName(textFindNameD.getText(), textFindSurnameD.getText());
 
             for (Doctor doctorTab : doctors) {
-                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getPhone(), doctorTab.getRoom()));
+                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getEmail(), doctorTab.getRoom()));
             }
 
             columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
             columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
             columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
             columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
-            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Email"));
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Błąd w polu imie lub nazwisko");
@@ -191,14 +192,14 @@ public class RegisterWindowController implements Initializable {
             List<Doctor> doctors = dbConn.getDoctorBySpec(textFindSpecializationD.getText());
 
             for (Doctor doctorTab : doctors) {
-                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getPhone(), doctorTab.getRoom()));
+                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getEmail(), doctorTab.getRoom()));
             }
 
             columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
             columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
             columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
             columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
-            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Email"));
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Błąd w polu Specjalizacja");
@@ -218,14 +219,14 @@ public class RegisterWindowController implements Initializable {
             List<Doctor> doctors = dbConn.getDoctorByRoom(textFindNrRoomD.getText());
 
             for (Doctor doctorTab : doctors) {
-                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getPhone(), doctorTab.getRoom()));
+                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getEmail(), doctorTab.getRoom()));
             }
 
             columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
             columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
             columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
             columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
-            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Email"));
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Błąd w polu Specjalizacja");
@@ -236,10 +237,7 @@ public class RegisterWindowController implements Initializable {
     }
 
     //LIST VISIT
-
-
     //DATA VISIT CHANGE
-
     //METHODS
     //Sprawdzanie czy są same litery
     private boolean isLetterOnly(String text1) {
@@ -271,6 +269,5 @@ public class RegisterWindowController implements Initializable {
         }
         return isNumber;
     }
-
 
 }
