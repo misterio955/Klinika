@@ -6,17 +6,17 @@ import javafx.beans.property.StringProperty;
 
 
 public class Visit implements IComponent {
-    
+
     private final StringProperty ID = new SimpleStringProperty(this, "ID");
 
-    public Visit (Visit visit) {
+    public Visit(Visit visit) {
         setID(visit.getID());
         setID_Doc(visit.getID_Doc());
-        setID_Pat(visit.getID_Pat());
+        setPesel_Pat(visit.getPesel_Pat());
         setDate(visit.getDate());
         setStatus(visit.getStatus());
     }
-    
+
     public StringProperty idProperty() {
         return ID;
     }
@@ -28,7 +28,7 @@ public class Visit implements IComponent {
     public final void setID(String ID) {
         idProperty().set(ID);
     }
-    
+
     private final StringProperty ID_Doc = new SimpleStringProperty(this, "ID_Lekarza");
 
     public StringProperty ID_DocProperty() {
@@ -42,22 +42,23 @@ public class Visit implements IComponent {
     public final void setID_Doc(String ID) {
         ID_DocProperty().set(ID);
     }
-    
-     private final StringProperty ID_Pat = new SimpleStringProperty(this, "ID_Pacjenta");
 
-    public StringProperty ID_PatProperty() {
-        return ID_Pat;
+    //-----------------------------------------------------------------------
+    private final StringProperty Pesel_Pat = new SimpleStringProperty(this, "Pesel_Pacjenta");
+
+    public StringProperty Pesel_PatProperty() {
+        return Pesel_Pat;
     }
 
-    public final String getID_Pat() {
-        return ID_PatProperty().get();
+    public final String getPesel_Pat() {
+        return Pesel_PatProperty().get();
     }
 
-    public final void setID_Pat(String ID) {
-        ID_PatProperty().set(ID);
+    public final void setPesel_Pat(String ID) {
+        Pesel_PatProperty().set(ID);
     }
-    
-    
+
+    //--------------------------------------------------
     private final StringProperty date = new SimpleStringProperty(this, "Data_Wizyty");
 
     public StringProperty dateProperty() {
@@ -71,7 +72,7 @@ public class Visit implements IComponent {
     public final void setDate(String date) {
         dateProperty().set(date);
     }
-    
+
     private final StringProperty status = new SimpleStringProperty(this, "Status_wizyty");
 
     public StringProperty statusProperty() {
@@ -86,16 +87,71 @@ public class Visit implements IComponent {
         statusProperty().set(status);
     }
 
-    public Visit(String ID, String ID_Doc, String ID_Pat, String Date, String status) {
+    //----------------------------------------------------------------------------------------
+    private final StringProperty imie = new SimpleStringProperty(this, "Imie");
+
+    public final StringProperty imieProperty() {
+        return imie;
+    }
+
+    public final String getImie() {
+        return imieProperty().get();
+    }
+
+    public final void setImie(String imie) {
+        imieProperty().set(imie);
+    }
+
+
+    private final StringProperty nazwisko = new SimpleStringProperty(this, "Nazwisko");
+
+    public StringProperty nazwiskoProperty() {
+        return nazwisko;
+    }
+
+    public final String getNazwisko() {
+        return nazwiskoProperty().get();
+    }
+
+    public final void setNazwisko(String nazwisko) {
+        nazwiskoProperty().set(nazwisko);
+    }
+
+
+    private final StringProperty ilosc = new SimpleStringProperty(this, "Ilosc");
+
+    public StringProperty iloscProperty() {
+        return ilosc;
+    }
+
+    public final String getIlosc() {
+        return iloscProperty().get();
+    }
+
+    public final void setIlosc(String ilosc) {
+        iloscProperty().set(ilosc);
+    }
+
+
+    public Visit(String ID, String ID_Doc, String Pesel_Pat, String Date, String status) {
         setID(ID);
         setID_Doc(ID_Doc);
-        setID_Pat(ID_Pat);
+        setPesel_Pat(Pesel_Pat);
         setDate(Date);
         setStatus(status);
     }
 
-    public String print() {
-        return "ID=" + getID() + ", ID_Doc=" + getID_Doc() + ", ID_Pat=" + getID_Pat() + ", date=" + getDate() + ", status=" + getStatus();
+    public Visit(String ID,String ilosc, String imie, String nazwisko,String Date, String status) {
+        setID(ID);
+        setIlosc(ilosc);
+        setImie(imie);
+        setNazwisko(nazwisko);
+        setStatus(status);
     }
-   
+
+
+    public String print() {
+        return "ID=" + getID() + ", ID_Doc=" + getID_Doc() + ", ID_Pat=" + getPesel_Pat() + ", date=" + getDate() + ", status=" + getStatus();
+    }
+
 }
