@@ -5,10 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.util.Callback;
 import javax.swing.JOptionPane;
 
 public class DatabaseConnection {
@@ -63,6 +67,32 @@ public class DatabaseConnection {
         compareDoctors();
         compareVisits();
         updateCopyLists();
+    }
+
+    public void setDatePicker(DatePicker datePicker) {
+        final Callback<DatePicker, DateCell> dayCellFactory
+                = new Callback<DatePicker, DateCell>() {
+                    @Override
+                    public DateCell call(final DatePicker datePicker) {
+                        return new DateCell() {
+                            @Override
+                            public void updateItem(LocalDate item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (item.isBefore(LocalDate.now())) {
+                                    setDisable(true);
+                                    setStyle("-fx-background-color: #ffc0cb;");
+                                }
+                                for (Date date : getDatesList()) {
+                                    if (item.toString().equals(date.getDay()) && date.getHoursBusy().size() == 32) {
+                                        setDisable(true);
+                                        setStyle("-fx-background-color: #ffc0cb;");
+                                    }
+                                }
+                            }
+                        };
+                    }
+                };
+        datePicker.setDayCellFactory(dayCellFactory);
     }
 
 // PATIENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -306,7 +336,7 @@ public class DatabaseConnection {
                 String Date = rs.getString("Data_Wizyty");
                 String Status = rs.getString("Status_wizyty");
                 Visit visit = new Visit(ID, ID_Doc, ID_Pat, Date, Status);
-                addDate(Date,getDoctorByID(ID_Doc));
+                addDate(Date, getDoctorByID(ID_Doc));
                 visitList.add(visit);
             }
             this.visitsList = visitList;
@@ -326,7 +356,7 @@ public class DatabaseConnection {
 
         for (Visit visit : visitsList) {
 
-            if (visit.getDate().equals(date)) {
+            if (visit.getDate().substring(0, 10).equals(date)) {
                 score.add(visit);
             }
         }
@@ -337,7 +367,7 @@ public class DatabaseConnection {
         List<Visit> score = new ArrayList<>();
         for (Visit visit : visitsList) {
 
-            if (visit.getID_Pat().equals(patient.getID())) {
+            if (visit.getPesel_Pat().equals(patient.getID())) {
                 score.add(visit);
             }
         }
@@ -378,7 +408,7 @@ public class DatabaseConnection {
 
                     try {
                         String query = "UPDATE wizyty SET ID = '" + visitsList.get(i).getID() + "', ID_Lekarza= '" + visitsList.get(i).getID_Doc()
-                                + "', ID_Pacjenta = '" + visitsList.get(i).getID_Pat() + "', Data_Wizyty = '" + visitsList.get(i).getDate() + "', Status_Wizyty = '" + visitsList.get(i).getStatus()
+                                + "', Pesel_pacjenta = '" + visitsList.get(i).getPesel_Pat()+ "', Data_Wizyty = '" + visitsList.get(i).getDate() + "', Status_Wizyty = '" + visitsList.get(i).getStatus()
                                 + "' WHERE ID = '" + visitsList.get(i).getID() + "';";
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
@@ -397,7 +427,7 @@ public class DatabaseConnection {
             } else {
                 try {
                     String query = "INSERT INTO Wizyty VALUES ('" + visitsList.get(i).getID() + "', '"
-                            + visitsList.get(i).getID_Doc() + "', '" + visitsList.get(i).getID_Pat() + "', '"
+                            + visitsList.get(i).getID_Doc() + "', '" + visitsList.get(i).getPesel_Pat()+ "', '"
                             + visitsList.get(i).getDate() + "', '" + visitsList.get(i).getStatus() + "');";
                     Statement stmnt = connection.createStatement();
                     int rs = stmnt.executeUpdate(query);
@@ -422,7 +452,7 @@ public class DatabaseConnection {
         return datesList;
     }
 
-    public void addDate(String date , Doctor doctor) {
+    public void addDate(String date, Doctor doctor) {
 
         Date newDate = new Date(date, doctor);
         int i = 0;
@@ -453,8 +483,8 @@ public class DatabaseConnection {
     public List<String> getFreeHoursFromDate(Date date) {
         return date.getHoursFree();
     }
-    
-    public Date getDateByDay(String day){
+
+    public Date getDateByDay(String day) {
         Date score = null;
 
         for (Date date : datesList) {

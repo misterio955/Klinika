@@ -25,8 +25,10 @@ public class ClinicController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+       
     }
+
+   
 
     public void connect() {
         try {
@@ -43,29 +45,24 @@ public class ClinicController implements Initializable {
     }
 
     @FXML
-    private DatePicker datePicker = new DatePicker();
+    DatePicker datePicker = new DatePicker();
 
     @FXML
     private void showPatients() {
 
         try {
             connect();
-            //dbConn.setHours();
-            //dbConn.showList(dbConn.getDatesList());
-            //  dbConn.addHourToDate(dbConn.getDates().get(1), "10:00:00");
-            //System.out.println(dbConn.getBusyHoursFromDate(dbConn.getDateByDay("2019-06-19")));
-            //  System.out.println(dbConn.getFreeHoursFromDate(dbConn.getDates().get(1)));
-            //dbConn.createVisit(dbConn.getDoctorByID("1"), dbConn.getPatientByPESEL("78031541367"), "2018-04-16 15:00:00");
-            //dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("78031541367"), "2018-04-16 13:00:00");
+            //dbConn.setDatePicker(datePicker);
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            dbConn.compareLists();
+            dbConn.showList(dbConn.getVisitsList());
             //dbConn.showList(dbConn.getDatesList());
             //dbConn.changeVisitDate(dbConn.getVisitByID("2"), "2018-04-25 33:30:00.0");
             //dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("78031541367"), "2018-06-19 11:00:00");
-           // System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            // System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             //dbConn.showList(dbConn.getVisitsList());
 
             //dbConn.showList(dbConn.getDates());
-
             dbConn.shutdown();
         } catch (SQLException ex) {
             Logger.getLogger(ClinicController.class.getName()).log(Level.SEVERE, null, ex);
