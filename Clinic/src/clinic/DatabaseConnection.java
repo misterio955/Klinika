@@ -332,10 +332,10 @@ public class DatabaseConnection {
             while (rs.next()) {
                 String ID = rs.getString("ID");
                 String ID_Doc = rs.getString("ID_Lekarza");
-                String ID_Pat = rs.getString("ID_Pacjenta");
+                String Pesel_Pat = rs.getString("Pesel_Pacjenta");
                 String Date = rs.getString("Data_Wizyty");
                 String Status = rs.getString("Status_wizyty");
-                Visit visit = new Visit(ID, ID_Doc, ID_Pat, Date, Status);
+                Visit visit = new Visit(ID, ID_Doc, Pesel_Pat, Date, Status);
                 addDate(Date, getDoctorByID(ID_Doc));
                 visitList.add(visit);
             }
