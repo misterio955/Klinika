@@ -367,7 +367,7 @@ public class DatabaseConnection {
         List<Visit> score = new ArrayList<>();
         for (Visit visit : visitsList) {
 
-            if (visit.getPesel_Pat().equals(patient.getID())) {
+            if (visit.getPesel_Pat().equals(patient.getPesel())) {
                 score.add(visit);
             }
         }
@@ -387,7 +387,7 @@ public class DatabaseConnection {
 
     public void createVisit(Doctor doctor, Patient patient, String date) {
 
-        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
+        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getPesel(), date, "Oczekiwana");
         visitsList.add(visit);
         addDate(date, doctor);
 
