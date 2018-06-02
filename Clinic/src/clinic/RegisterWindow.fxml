@@ -40,7 +40,7 @@
                         <TextField fx:id="textRoomRD" layoutX="572.0" layoutY="154.0" promptText="Podaj e-mail" />
                         <Label layoutX="482.0" layoutY="190.0" prefHeight="25.0" prefWidth="90.0" text="Hasło" />
                         <TextField fx:id="textPasswordRD" layoutX="572.0" layoutY="190.0" promptText="Podaj e-mail" />
-                        <Button fx:id="buttonRegisterD" layoutX="481.0" layoutY="225.0" mnemonicParsing="false" onAction="#registerButtonD" prefHeight="30.0" prefWidth="240.0" text="Rejestruj Lekarza" />
+                        <Button fx:id="buttonRegisterD" layoutX="481.0" layoutY="225.0" mnemonicParsing="false" onAction="#registerButtonD" prefHeight="30.0" prefWidth="240.0" text="Rejestruj lekarza" />
                      </children>
                   </AnchorPane>
             </content>
@@ -65,7 +65,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="tabListDoctror" text="Lista Lekarzy">
+            <Tab fx:id="tabListDoctror" text="Lista lekarzy">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -90,35 +90,36 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab id="Change_Data_Tab" onSelectionChanged="#testL" text="Zmiana terminu">
+            <Tab id="Change_Data_Tab" onSelectionChanged="#visitListPatient" text="Zmiana terminu">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tableListVisitCH" layoutX="15.0" layoutY="207.0" prefHeight="300.0" prefWidth="550.0">
+                        <TableView fx:id="tableListVisit" layoutX="15.0" layoutY="150.0" prefHeight="360.0" prefWidth="550.0">
                            <columns>
-                              <TableColumn id="Pesel" prefWidth="125.0" text="Pesel" />
-                              <TableColumn id="Name" prefWidth="125.0" text="Imie" />
-                              <TableColumn id="Surname" prefWidth="125.0" text="Nazwisko" />
-                              <TableColumn id="Data_visit" prefWidth="175.0" text="Data wizyty" />
+                              <TableColumn id="Pesel" fx:id="columnVisitLp" prefWidth="29.0" text="Lp" />
+                              <TableColumn id="Name" fx:id="columnVisitName" prefWidth="154.0" text="Imie" />
+                              <TableColumn id="Surname" fx:id="columnVisitSurname" prefWidth="160.0" text="Nazwisko" />
+                              <TableColumn id="Data_visit" fx:id="columnVisitDate" prefWidth="202.0" text="Data wizyty" />
                            </columns>
                         </TableView>
-                        <Button fx:id="buttonChangeDataViisit" layoutX="15.0" layoutY="525.0" mnemonicParsing="false" prefWidth="775.0" text="Zmien" />
-                        <DatePicker fx:id="datePicker" layoutX="586.0" layoutY="165.0" onAction="#choseData" prefHeight="25.0" prefWidth="201.0" />
-                        <TableView fx:id="tableHoursAndMinutes" layoutX="587.0" layoutY="207.0" prefHeight="300.0" prefWidth="200.0">
+                        <Button fx:id="buttonChangeDataViisit" layoutX="15.0" layoutY="525.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="350.0" text="Zmien wizyte" />
+                        <DatePicker fx:id="datePicker" layoutX="585.0" layoutY="100.0" onAction="#choseData" prefHeight="25.0" prefWidth="200.0" />
+                        <TableView fx:id="tableHoursAndMinutes" layoutX="585.0" layoutY="150.0" prefHeight="360.0" prefWidth="200.0">
                            <columns>
-                              <TableColumn fx:id="columnTableHours" prefWidth="200.0" text="Godzina" />
+                              <TableColumn fx:id="columnTableHours" maxWidth="200.0" prefWidth="180.0" styleClass="-fx-alignment: center-right" text="Godzina" />
                            </columns>
                         </TableView>
-                        <Label fx:id="informationP" layoutX="15.0" layoutY="14.0" text="Dane Pacjenta">
+                        <Label fx:id="informationP" layoutX="15.0" layoutY="14.0" text="Dane pacjenta">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="informationD" layoutX="400.0" layoutY="14.0" text="Dane Lekarza">
+                        <Label fx:id="informationD" layoutX="400.0" layoutY="14.0" text="Dane lekarza">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
+                        <Button fx:id="buttonChangeDataViisit1" layoutX="435.0" layoutY="525.0" mnemonicParsing="false" onAction="#AddVisit" prefHeight="30.0" prefWidth="350.0" text="Dodaj wizyte" />
                      </children></AnchorPane>
               </content>
             </Tab>
