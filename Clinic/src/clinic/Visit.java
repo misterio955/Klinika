@@ -141,12 +141,13 @@ public class Visit implements IComponent {
         setStatus(status);
     }
 
-    public Visit(String ID,String ilosc, String imie, String nazwisko,String Date, String status) {
+    public Visit(String ID,String ilosc, String imie, String nazwisko,String date, String status) {
         setID(ID);
         setIlosc(ilosc);
         setImie(imie);
         setNazwisko(nazwisko);
         setStatus(status);
+        setDate(date);
     }
 
 
