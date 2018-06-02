@@ -374,6 +374,17 @@ public class DatabaseConnection {
         return score;
     }
 
+    public List<Visit> getVisitByDoctor(Doctor doctor) {
+        List<Visit> score = new ArrayList<>();
+        for (Visit visit : visitsList) {
+
+            if (visit.getID_Doc().equals(doctor.getID())) {
+                score.add(visit);
+            }
+        }
+        return score;
+    }
+
     public void createVisit(Doctor doctor, Patient patient, String date) {
 
         Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
@@ -408,7 +419,7 @@ public class DatabaseConnection {
 
                     try {
                         String query = "UPDATE wizyty SET ID = '" + visitsList.get(i).getID() + "', ID_Lekarza= '" + visitsList.get(i).getID_Doc()
-                                + "', Pesel_pacjenta = '" + visitsList.get(i).getPesel_Pat()+ "', Data_Wizyty = '" + visitsList.get(i).getDate() + "', Status_Wizyty = '" + visitsList.get(i).getStatus()
+                                + "', Pesel_pacjenta = '" + visitsList.get(i).getPesel_Pat() + "', Data_Wizyty = '" + visitsList.get(i).getDate() + "', Status_Wizyty = '" + visitsList.get(i).getStatus()
                                 + "' WHERE ID = '" + visitsList.get(i).getID() + "';";
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
@@ -427,7 +438,7 @@ public class DatabaseConnection {
             } else {
                 try {
                     String query = "INSERT INTO Wizyty VALUES ('" + visitsList.get(i).getID() + "', '"
-                            + visitsList.get(i).getID_Doc() + "', '" + visitsList.get(i).getPesel_Pat()+ "', '"
+                            + visitsList.get(i).getID_Doc() + "', '" + visitsList.get(i).getPesel_Pat() + "', '"
                             + visitsList.get(i).getDate() + "', '" + visitsList.get(i).getStatus() + "');";
                     Statement stmnt = connection.createStatement();
                     int rs = stmnt.executeUpdate(query);
@@ -477,23 +488,32 @@ public class DatabaseConnection {
     }
 
     public List<String> getBusyHoursFromDate(Date date) {
-        return date.getHoursBusy();
+        if (getDatesList().contains(date)) {
+            return date.getHoursBusy();
+        } else {
+            return null;
+        }
     }
 
     public List<String> getFreeHoursFromDate(Date date) {
-        return date.getHoursFree();
+
+        if (getDatesList().contains(date)) {
+            return date.getHoursFree();
+        } else {
+            return null;
+        }
     }
 
-    public Date getDateByDay(String day) {
+    public Date getDateByDay(String day, Doctor doctor) {
         Date score = null;
 
         for (Date date : datesList) {
-
-            if (date.getDay().equals(day)) {
-                score = date;
-            }
+            
+                if (date.getDay().equals(day) && date.getDoctor().getID().equals(doctor.getID())) {
+                    score = date;
+                }
+            
         }
         return score;
     }
-
 }
