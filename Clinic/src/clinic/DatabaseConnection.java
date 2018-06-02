@@ -344,9 +344,9 @@ public class DatabaseConnection {
     }
 
     public List<Visit> getVisitsList() {
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~a");
-        showList(visitsListCopy);
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~b");
+//        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~a");
+//        showList(visitsListCopy);
+//        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~b");
         return visitsList;
     }
 
@@ -367,7 +367,7 @@ public class DatabaseConnection {
         List<Visit> score = new ArrayList<>();
         for (Visit visit : visitsList) {
 
-            if (visit.getPesel_Pat().equals(patient.getID())) {
+            if (visit.getPesel_Pat().equals(patient.getPesel())) {
                 score.add(visit);
             }
         }
@@ -407,8 +407,10 @@ public class DatabaseConnection {
     }
 
     public void changeVisitDate(Visit visit, String date) {
+        deleteDate(visit.getDate(), getDoctorByID(visit.getID_Doc()));
         visit.setDate(date);
         visit.setStatus("Przelozona");
+        addDate(date, getDoctorByID(visit.getID_Doc()));
     }
 
     public void compareVisits() {
@@ -482,6 +484,23 @@ public class DatabaseConnection {
         }
     }
 
+    public void deleteDate(String date, Doctor doctor) {
+
+        for (Date aDate : datesList) {
+            if (aDate.getDay().equals(date.substring(0, 10)) && aDate.getDoctor().equals(doctor)) {
+
+                if (aDate.getHoursBusy().size() == 1) {
+                    datesList.remove(aDate);
+                } else {
+
+                    aDate.getHoursBusy().remove(date.substring(11, 19));
+                }
+
+            }
+        }
+
+    }
+
     public void addHourToDate(Date date, String hour) {
         date.addBusyHour(hour);
 
@@ -508,11 +527,11 @@ public class DatabaseConnection {
         Date score = null;
 
         for (Date date : datesList) {
-            
-                if (date.getDay().equals(day) && date.getDoctor().getID().equals(doctor.getID())) {
-                    score = date;
-                }
-            
+
+            if (date.getDay().equals(day) && date.getDoctor().getID().equals(doctor.getID())) {
+                score = date;
+            }
+
         }
         return score;
     }
