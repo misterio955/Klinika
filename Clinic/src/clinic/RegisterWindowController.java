@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,7 +26,7 @@ public class RegisterWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
 
             System.out.println("polaczono");
             dbConn.setDoctorsList();
@@ -37,8 +38,8 @@ public class RegisterWindowController implements Initializable {
         }
         tableListP.setPlaceholder(new Label("Brak wynikow"));
         tableListD.setPlaceholder(new Label("Brak wynikow"));
-        //tableListD.setPlaceholder(new Label("Brak wynikow"));
-        dbConn.showList(dbConn.getDatesList());
+        tableListVisit.setPlaceholder(new Label("Brak wynikow"));
+        tableHoursAndMinutes.setPlaceholder(new Label("Brak wynikow"));
     }
 
     //    REGISTER
@@ -53,6 +54,23 @@ public class RegisterWindowController implements Initializable {
 
     @FXML
     private TextField textEmailRP;
+    //Lekarz
+    @FXML
+    private TextField textNameRD;
+
+    @FXML
+    private TextField textSurnameRD;
+
+    @FXML
+    private TextField textSpecRD;
+
+    @FXML
+    private TextField textEmailRD;
+
+    @FXML
+    private TextField textRoomRD;
+    @FXML
+    private TextField textPasswordRD;
 
     @FXML
     private void registerButtonP(ActionEvent event) {
@@ -77,10 +95,12 @@ public class RegisterWindowController implements Initializable {
             alert.setContentText("Imie jest za krótkie");
             alert.showAndWait();
         } else {
-            System.out.println(textNameRP.getText());
-            System.out.println(textSurnameRP.getText());
-            System.out.println(textPeselRP.getText());
-            System.out.println(textEmailRP.getText());
+            System.out.println(textNameRD.getText());
+            System.out.println(textSurnameRD.getText());
+            System.out.println(textSpecRD.getText());
+            System.out.println(textEmailRD.getText());
+            System.out.println(textRoomRD.getText());
+            System.out.println(textPasswordRD.getText());
         }
     }
 
@@ -223,7 +243,7 @@ public class RegisterWindowController implements Initializable {
 
     }
 
-    //DATA VISIT CHANGE
+    //VISIT
     @FXML
     private Label informationP;
     @FXML
@@ -231,40 +251,60 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private DatePicker datePicker;
 
+    //Godziny
     @FXML
     private TableView<String> tableHoursAndMinutes;
     @FXML
     private TableColumn<String, String> columnTableHours;
 
+    //Wizyty
     @FXML
-    private void testL() {
-        if (!tableListP.getSelectionModel().isEmpty())
-            informationP.setText(tableListP.getSelectionModel().getSelectedItem().getImie() + " " + tableListP.getSelectionModel().getSelectedItem().getNazwisko());
+    private TableView<Visit> tableListVisit;
+    @FXML
+    private TableColumn<Visit, String> columnVisitLp;
+    @FXML
+    private TableColumn<Visit, String> columnVisitName;
+    @FXML
+    private TableColumn<Visit, String> columnVisitSurname;
+    @FXML
+    private TableColumn<Visit, String> columnVisitDate;
+
+
+    @FXML
+    private void visitListPatient() {
+
+        listForPatient();
         if (!tableListD.getSelectionModel().isEmpty())
-            informationD.setText(tableListD.getSelectionModel().getSelectedItem().getImie() + " " + tableListD.getSelectionModel().getSelectedItem().getNazwisko());
+            informationD.setText(tableListD.getSelectionModel().getSelectedItem().getImie() + " " + tableListD.getSelectionModel().getSelectedItem().getNazwisko() + " " + tableListD.getSelectionModel().getSelectedItem().getSpec());
     }
 
     @FXML
     private void choseData(ActionEvent event) {
-        tableHoursAndMinutes.getItems().clear();
-        if (!tableListD.getSelectionModel().isEmpty()) {
-            //Doctor doctor = new Doctor(dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID()));
-            //Date date = new Date(datePicker.getValue().toString(), doctor);
+        doListForTime();
+    }
 
-            if (true/*/dbConn.getDateByDay(datePicker.getValue().toString()) != null*/) {
-                List<String> listTest = dbConn.getFreeHoursFromDate(dbConn.getDateByDay(datePicker.getValue().toString()));
-                // List<String> list = dbConn.getBusyHoursFromDate(dbConn.getDateByDay(date.getDay()));
-                // List<String> list2 = dbConn.getFreeHoursFromDate(dbConn.getDateByDay(date.getDay()));
-                for (String listS : listTest) {
-                    System.out.println(listS);
-
-                }
-                listForTime(listTest);
-            }
+    @FXML
+    private void AddVisit(ActionEvent event) {
+        String str = datePicker.getValue().toString() + " " + tableHoursAndMinutes.getSelectionModel().getSelectedItem();
+        System.out.println(str);
+        if (!tableHoursAndMinutes.getSelectionModel().getSelectedItem().isEmpty() && !tableListD.getSelectionModel().isEmpty() && !tableListP.getSelectionModel().isEmpty()) {
+            dbConn.createVisit(dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID()), dbConn.getPatientByPESEL(tableListP.getSelectionModel().getSelectedItem().getPesel()), str);
+            doListForTime();
+            listForPatient();
+        } else {
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Błąd w polu imie lub nazwisko");
+            alert.setContentText("Podane imie lub naziwsko zawiera błąd lub nie ma go w bazie");
+            alert.showAndWait();
         }
+
 
     }
 
+    @FXML
+    private void changeDateVisit(ActionEvent event) {
+
+    }
 
     //METHODS
     //Sprawdzanie czy są same litery
@@ -330,7 +370,47 @@ public class RegisterWindowController implements Initializable {
             tableHoursAndMinutes.getItems().add(dateList);
         }
         columnTableHours.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-
     }
 
+    private void doListForTime() {
+        tableHoursAndMinutes.getItems().clear();
+        columnTableHours.setStyle("-fx-alignment: CENTER;");
+        if (!tableListD.getSelectionModel().isEmpty() && datePicker.getValue().compareTo(LocalDate.now()) >= 0) {
+            if (dbConn.getDateByDay(datePicker.getValue().toString(), dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID())) == null) {
+                List<String> listTest = dbConn.getDatesList().get(1).getHours();
+                listForTime(listTest);
+            } else {
+                List<String> listTest = dbConn.getFreeHoursFromDate(dbConn.getDateByDay(datePicker.getValue().toString(), dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID())));
+                listForTime(listTest);
+            }
+        }
+    }
+
+    private void listForPatient(){
+        tableListVisit.getItems().clear();
+        if (!tableListP.getSelectionModel().isEmpty()) {
+            informationP.setText(tableListP.getSelectionModel().getSelectedItem().getImie() + " " + tableListP.getSelectionModel().getSelectedItem().getNazwisko());
+            // List<Visit> list2 = dbConn.getVisitByPatient(dbConn.getPatientByPESEL("84112300687"));
+            List<Visit> list = dbConn.getVisitByPatient(dbConn.getPatientByPESEL(tableListP.getSelectionModel().getSelectedItem().getPesel()));
+
+            if (!list.isEmpty()) {
+
+                int i = 1;
+                for (Visit visit : list) {
+                    tableListVisit.getItems().add(new Visit(visit.getID(), Integer.toString(i), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getImie(), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getNazwisko(), visit.getDate(), visit.getStatus()));
+                    i++;
+
+                }
+                columnVisitLp.setCellValueFactory(new PropertyValueFactory<>("Ilosc"));
+                columnVisitName.setCellValueFactory(new PropertyValueFactory<>("Imie"));
+                columnVisitDate.setCellValueFactory(new PropertyValueFactory<>("Date"));
+                columnVisitSurname.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
+
+            } else {
+                tableListVisit.setPlaceholder(new Label("Brak wyników z dla " + tableListP.getSelectionModel().getSelectedItem().getImie() + " " + tableListP.getSelectionModel().getSelectedItem().getNazwisko()));
+            }
+
+
+        }
+    }
 }
