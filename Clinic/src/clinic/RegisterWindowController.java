@@ -28,7 +28,7 @@ public class RegisterWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
 
             System.out.println("polaczono");
             dbConn.setDoctorsList();
@@ -116,17 +116,17 @@ public class RegisterWindowController implements Initializable {
             if (isLetterOnly(textSurnameRD.getText())) {
                 if (isLetterOnly(textSpecRD.getText())) {
                     if (isEmail(textEmailRD.getText())) {
-                        if(isNumbersOnly(textRoomRD.getText())){
-                            if(textPasswordRD.getLength() >= 7){
-                                dbConn.registerDoctor(textNameRD.getText(),textSurnameRD.getText(),textPasswordRD.getText(),textSpecRD.getText(),textEmailRD.getText(),textRoomRD.getText());
+                        if (isNumbersOnly(textRoomRD.getText())) {
+                            if (textPasswordRD.getLength() >= 7) {
+                                dbConn.registerDoctor(textNameRD.getText(), textSurnameRD.getText(), textPasswordRD.getText(), textSpecRD.getText(), textEmailRD.getText(), textRoomRD.getText());
                                 //dbConn.compareDoctors();
-                            }else {
+                            } else {
                                 alert.setTitle("Uwaga!");
                                 alert.setHeaderText("Pole Hasło");
                                 alert.setContentText("Hasło jest za któtkie");
                                 alert.showAndWait();
                             }
-                        }else {
+                        } else {
                             alert.setTitle("Uwaga!");
                             alert.setHeaderText("Pole nr sali");
                             alert.setContentText("W polu nr sali prosze użyc tylko liter");
@@ -452,6 +452,7 @@ public class RegisterWindowController implements Initializable {
 
     //Metoda która wykonuje listForTime z odpowienimi parametrami i w odpowiedni sposób
     private void doListForTime() {
+
         tableHoursAndMinutes.getItems().clear();
         columnTableHours.setStyle("-fx-alignment: CENTER;");
         if (!tableListD.getSelectionModel().isEmpty() && datePicker.getValue().compareTo(LocalDate.now()) >= 0) {
@@ -459,6 +460,7 @@ public class RegisterWindowController implements Initializable {
                 List<String> listTest = dbConn.getDatesList().get(1).getHours();
                 listForTime(listTest);
             } else {
+                System.out.println(dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID()).getID());
                 List<String> listTest = dbConn.getFreeHoursFromDate(dbConn.getDateByDay(datePicker.getValue().toString(), dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID())));
                 listForTime(listTest);
             }
@@ -477,8 +479,10 @@ public class RegisterWindowController implements Initializable {
 
                 int i = 1;
                 for (Visit visit : list) {
-                    tableListVisit.getItems().add(new Visit(visit.getID(), Integer.toString(i), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getImie(), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getNazwisko(), visit.getDate(), visit.getStatus()));
-                    i++;
+                    if (visit.getID_Doc().equals(tableListD.getSelectionModel().getSelectedItem().getID())) {
+                        tableListVisit.getItems().add(new Visit(visit.getID(), Integer.toString(i), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getImie(), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getNazwisko(), visit.getDate(), visit.getStatus()));
+                        i++;
+                    }
 
                 }
                 columnVisitLp.setCellValueFactory(new PropertyValueFactory<>("Ilosc"));
