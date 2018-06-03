@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterWindowController implements Initializable {
 
@@ -40,6 +42,7 @@ public class RegisterWindowController implements Initializable {
         tableListD.setPlaceholder(new Label("Brak wynikow"));
         tableListVisit.setPlaceholder(new Label("Brak wynikow"));
         tableHoursAndMinutes.setPlaceholder(new Label("Brak wynikow"));
+        dbConn.showList(dbConn.getPatientsList());
     }
 
     //    REGISTER
@@ -74,33 +77,84 @@ public class RegisterWindowController implements Initializable {
 
     @FXML
     private void registerButtonP(ActionEvent event) {
-        if (textNameRP.getLength() <= 3) {
-            System.out.println("Imie jest za któtkie");
-            alert.setTitle("Bląd");
-            alert.setContentText("Imie jest za krótkie");
-            alert.showAndWait();
+        if (isLetterOnly(textNameRP.getText())) {
+            if (isLetterOnly(textSurnameRP.getText())) {
+                if (isNumbersOnly(textPeselRP.getText()) && textPeselRP.getLength() == 11) {
+                    if (isEmail(textEmailRP.getText())) {
+                        dbConn.registerPatient(textPeselRP.getText(), textNameRP.getText(), textSurnameRP.getText(), textEmailRP.getText());
+                        dbConn.comparePatients();
+                    } else {
+                        alert.setTitle("Uwaga!");
+                        alert.setHeaderText("Pole email");
+                        alert.setContentText("E-mail jest błędny");
+                        alert.showAndWait();
+                    }
+                } else {
+                    alert.setTitle("Uwaga!");
+                    alert.setHeaderText("Pole pesel");
+                    alert.setContentText("Pesel jest błędny prosze o podanie prawidłowego peselu");
+                    alert.showAndWait();
+                }
+            } else {
+                alert.setTitle("Uwaga!");
+                alert.setHeaderText("Pole nazwisko");
+                alert.setContentText("W polu nazwisko można używac tylko liter");
+                alert.showAndWait();
+            }
         } else {
-            System.out.println(textNameRP.getText());
-            System.out.println(textSurnameRP.getText());
-            System.out.println(textPeselRP.getText());
-            System.out.println(textEmailRP.getText());
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Pole imie");
+            alert.setContentText("W polu imie można używac tylko liter");
+            alert.showAndWait();
         }
     }
 
     @FXML
     private void registerButtonD(ActionEvent event) {
-        if (textNameRP.getLength() <= 3) {
-            System.out.println("Imie jest za któtkie");
-            alert.setTitle("Bląd");
-            alert.setContentText("Imie jest za krótkie");
-            alert.showAndWait();
+        if (isLetterOnly(textNameRD.getText())) {
+            if (isLetterOnly(textSurnameRD.getText())) {
+                if (isLetterOnly(textSpecRD.getText())) {
+                    if (isEmail(textEmailRD.getText())) {
+                        if(isNumbersOnly(textRoomRD.getText())){
+                            if(textPasswordRD.getLength() >= 7){
+                                dbConn.registerDoctor(textNameRD.getText(),textSurnameRD.getText(),textPasswordRD.getText(),textSpecRD.getText(),textEmailRD.getText(),textRoomRD.getText());
+                                dbConn.compareDoctors();
+                            }else {
+                                alert.setTitle("Uwaga!");
+                                alert.setHeaderText("Pole Hasło");
+                                alert.setContentText("Hasło jest za któtkie");
+                                alert.showAndWait();
+                            }
+                        }else {
+                            alert.setTitle("Uwaga!");
+                            alert.setHeaderText("Pole nr sali");
+                            alert.setContentText("W polu nr sali prosze użyc tylko liter");
+                            alert.showAndWait();
+                        }
+
+                    } else {
+                        alert.setTitle("Uwaga!");
+                        alert.setHeaderText("Pole email");
+                        alert.setContentText("E-mail jest błędny");
+                        alert.showAndWait();
+                    }
+                } else {
+                    alert.setTitle("Uwaga!");
+                    alert.setHeaderText("Pole Specjalizaca");
+                    alert.setContentText("W polu specjalizacja można używac tylko liter");
+                    alert.showAndWait();
+                }
+            } else {
+                alert.setTitle("Uwaga!");
+                alert.setHeaderText("Pole nazwisko");
+                alert.setContentText("W polu nazwisko można używac tylko liter");
+                alert.showAndWait();
+            }
         } else {
-            System.out.println(textNameRD.getText());
-            System.out.println(textSurnameRD.getText());
-            System.out.println(textSpecRD.getText());
-            System.out.println(textEmailRD.getText());
-            System.out.println(textRoomRD.getText());
-            System.out.println(textPasswordRD.getText());
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Pole imie");
+            alert.setContentText("W polu imie można używac tylko liter");
+            alert.showAndWait();
         }
     }
 
@@ -257,7 +311,7 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private TableColumn<String, String> columnTableHours;
 
-    //Wizyty
+    //Wizyty table
     @FXML
     private TableView<Visit> tableListVisit;
     @FXML
@@ -269,7 +323,7 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private TableColumn<Visit, String> columnVisitDate;
 
-
+    //Wypisanie wszystkich wizyt pacjenta
     @FXML
     private void visitListPatient() {
 
@@ -278,40 +332,53 @@ public class RegisterWindowController implements Initializable {
             informationD.setText(tableListD.getSelectionModel().getSelectedItem().getImie() + " " + tableListD.getSelectionModel().getSelectedItem().getNazwisko() + " " + tableListD.getSelectionModel().getSelectedItem().getSpec());
     }
 
+    //Wbyieranie daty
     @FXML
     private void choseData(ActionEvent event) {
         doListForTime();
     }
 
+    //Dodanie wizyty
     @FXML
     private void AddVisit(ActionEvent event) {
         String str = datePicker.getValue().toString() + " " + tableHoursAndMinutes.getSelectionModel().getSelectedItem();
-        System.out.println(str);
         if (!tableHoursAndMinutes.getSelectionModel().getSelectedItem().isEmpty() && !tableListD.getSelectionModel().isEmpty() && !tableListP.getSelectionModel().isEmpty()) {
             dbConn.createVisit(dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID()), dbConn.getPatientByPESEL(tableListP.getSelectionModel().getSelectedItem().getPesel()), str);
             doListForTime();
             listForPatient();
+            dbConn.compareLists();
         } else {
             alert.setTitle("Uwaga!");
-            alert.setHeaderText("Błąd w polu imie lub nazwisko");
-            alert.setContentText("Podane imie lub naziwsko zawiera błąd lub nie ma go w bazie");
+            alert.setHeaderText("Nie dokonano wyboru");
+            alert.setContentText("Prosze o sprawdzenie czy napewno został wybrany lekarz bądż pacjent");
             alert.showAndWait();
         }
 
 
     }
 
+    //Zmiana terminu wizyty
     @FXML
     private void changeDateVisit(ActionEvent event) {
-
+        String str = datePicker.getValue().toString() + " " + tableHoursAndMinutes.getSelectionModel().getSelectedItem();
+        if (!tableHoursAndMinutes.getSelectionModel().getSelectedItem().isEmpty() && !tableListD.getSelectionModel().isEmpty() && !tableListP.getSelectionModel().isEmpty()) {
+            dbConn.changeVisitDate(dbConn.getVisitByID(tableListVisit.getSelectionModel().getSelectedItem().getID()), str);
+            doListForTime();
+            listForPatient();
+            dbConn.compareLists();
+        } else {
+            alert.setTitle("Uwaga!");
+            alert.setHeaderText("Nie dokonano wyboru");
+            alert.setContentText("Prosze o sprawdzenie czy napewno został wybrany lekarz bądż pacjent");
+            alert.showAndWait();
+        }
     }
 
     //METHODS
     //Sprawdzanie czy są same litery
     private boolean isLetterOnly(String text1) {
         boolean isLetter = false;
-        text1.toLowerCase();
-        char[] LetterOnly = text1.toCharArray();
+        char[] LetterOnly = text1.toLowerCase().toCharArray();
         for (int i = 0; i < LetterOnly.length; i++) {
             if (LetterOnly[i] >= 'a' && LetterOnly[i] <= 'z') {
                 isLetter = true;
@@ -338,7 +405,16 @@ public class RegisterWindowController implements Initializable {
         return isNumber;
     }
 
-    //Lista dla pacjentow
+    //Walidacja e-mail
+    private boolean isEmail(String text) {
+        Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+        Matcher m = p.matcher(text);
+
+        boolean matchFound = m.matches();
+        return matchFound;
+    }
+
+    //Lista dla pacjentow do uzycia
     private void listForPatient(List<Patient> list) {
         for (Patient patientTab : list) {
             tableListP.getItems().add(new Patient(patientTab.getID(), patientTab.getPesel(), patientTab.getImie(), patientTab.getNazwisko(), patientTab.getEmail()));
@@ -364,6 +440,7 @@ public class RegisterWindowController implements Initializable {
         columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Email"));
     }
 
+    //Lista dotyczaca Godzin
     private void listForTime(List<String> list) {
 
         for (String dateList : list) {
@@ -372,6 +449,7 @@ public class RegisterWindowController implements Initializable {
         columnTableHours.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
     }
 
+    //Metoda która wykonuje listForTime z odpowienimi parametrami i w odpowiedni sposób
     private void doListForTime() {
         tableHoursAndMinutes.getItems().clear();
         columnTableHours.setStyle("-fx-alignment: CENTER;");
@@ -386,7 +464,8 @@ public class RegisterWindowController implements Initializable {
         }
     }
 
-    private void listForPatient(){
+    //Metoda w której uzywamy listForPatient w odpowiedni sposób
+    private void listForPatient() {
         tableListVisit.getItems().clear();
         if (!tableListP.getSelectionModel().isEmpty()) {
             informationP.setText(tableListP.getSelectionModel().getSelectedItem().getImie() + " " + tableListP.getSelectionModel().getSelectedItem().getNazwisko());
