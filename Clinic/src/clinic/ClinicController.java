@@ -25,10 +25,8 @@ public class ClinicController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
-    }
 
-   
+    }
 
     public void connect() {
         try {
@@ -52,17 +50,13 @@ public class ClinicController implements Initializable {
 
         try {
             connect();
-            //dbConn.setDatePicker(datePicker);
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            dbConn.compareLists();
+           
             dbConn.showList(dbConn.getVisitsList());
-            //dbConn.showList(dbConn.getDatesList());
-            //dbConn.changeVisitDate(dbConn.getVisitByID("2"), "2018-04-25 33:30:00.0");
-            //dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("78031541367"), "2018-06-19 11:00:00");
-            // System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //dbConn.showList(dbConn.getVisitsList());
-
-            //dbConn.showList(dbConn.getDates());
+            dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("80012236149"), "2018-06-19 14:15:00");
+            //dbConn.changeVisitDate(dbConn.getVisitByID("8"), "2018-06-19 12:45:00");
+            System.out.println("--------------------------");
+            dbConn.showList(dbConn.getVisitsList());
+          
             dbConn.shutdown();
         } catch (SQLException ex) {
             Logger.getLogger(ClinicController.class.getName()).log(Level.SEVERE, null, ex);

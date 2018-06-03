@@ -28,13 +28,14 @@ public class RegisterWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
 
             System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
             dbConn.setVisitsList();
             dbConn.updateCopyLists();
+            dbConn.setDatePicker(datePicker);
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(RegisterWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,7 +83,7 @@ public class RegisterWindowController implements Initializable {
                 if (isNumbersOnly(textPeselRP.getText()) && textPeselRP.getLength() == 11) {
                     if (isEmail(textEmailRP.getText())) {
                         dbConn.registerPatient(textPeselRP.getText(), textNameRP.getText(), textSurnameRP.getText(), textEmailRP.getText());
-                        dbConn.comparePatients();
+                        //dbConn.comparePatients();
                     } else {
                         alert.setTitle("Uwaga!");
                         alert.setHeaderText("Pole email");
@@ -118,7 +119,7 @@ public class RegisterWindowController implements Initializable {
                         if(isNumbersOnly(textRoomRD.getText())){
                             if(textPasswordRD.getLength() >= 7){
                                 dbConn.registerDoctor(textNameRD.getText(),textSurnameRD.getText(),textPasswordRD.getText(),textSpecRD.getText(),textEmailRD.getText(),textRoomRD.getText());
-                                dbConn.compareDoctors();
+                                //dbConn.compareDoctors();
                             }else {
                                 alert.setTitle("Uwaga!");
                                 alert.setHeaderText("Pole Hasło");

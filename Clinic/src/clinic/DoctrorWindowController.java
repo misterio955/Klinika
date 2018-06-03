@@ -21,6 +21,7 @@ public class DoctrorWindowController implements Initializable {
     private DatabaseConnection dbConn;
     private Alert alert = new Alert(Alert.AlertType.WARNING);
     private boolean cantRefresh = false;
+    private static int currentIdDoctor;
 
     //cj
     //?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
@@ -28,7 +29,7 @@ public class DoctrorWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
-
+            
             System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
@@ -38,6 +39,7 @@ public class DoctrorWindowController implements Initializable {
             Logger.getLogger(RegisterWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
         defaultDate();
+        System.out.println(currentIdDoctor);
 
     }
 
@@ -71,11 +73,12 @@ public class DoctrorWindowController implements Initializable {
     //Button Wizyta zakończona
     @FXML
     private void visitIsEnd(ActionEvent event) {
-        if (tableListP.getSelectionModel().isEmpty() == false) {
+        if (!tableListP.getSelectionModel().isEmpty()) {
             List<Visit> list = dbConn.getVisitsList();
             for (Visit visit : list) {
                 if (tableListP.getSelectionModel().getSelectedItem().getID() == visit.getID()) {
                     visit.setStatus("Zakonczona");
+                    dbConn.compareLists();
                 }
             }
         }
@@ -85,11 +88,12 @@ public class DoctrorWindowController implements Initializable {
     //Button Wizyty nie odbyła się
     @FXML
     private void visitDidNotTakePlace(ActionEvent event) {
-        if (tableListP.getSelectionModel().isEmpty() == false) {
+        if (!tableListP.getSelectionModel().isEmpty()) {
             List<Visit> list = dbConn.getVisitsList();
             for (Visit visit : list) {
                 if (tableListP.getSelectionModel().getSelectedItem().getID() == visit.getID()) {
                     visit.setStatus("Nie odbyła sie");
+                    dbConn.compareLists();
                 }
             }
         }
@@ -121,8 +125,13 @@ public class DoctrorWindowController implements Initializable {
 
     //Default value
     private void defaultDate() {
-        datePicker.setValue(LocalDate.now());
-        showTableList(dbConn.getVisitByDate(LocalDate.now().toString()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Visit> list = dbConn.getVisitByDate(LocalDate.now().toString());
+        if (!list.isEmpty()) {
+            showTableList(list);
+        } else {
+            tableListP.setPlaceholder(new Label("Nie ma wizyt w dniu dzisiejszym"));
+        }
     }
 
     //Method
@@ -130,8 +139,10 @@ public class DoctrorWindowController implements Initializable {
         if (!list.isEmpty()) {
             int i = 1;
             for (Visit visit : list) {
-                tableListP.getItems().add(new Visit(visit.getID(), Integer.toString(i), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getImie(), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getNazwisko(), visit.getDate(), visit.getStatus()));
-                i++;
+                if (visit.getID_Doc().equals(Integer.toString(currentIdDoctor))) {
+                    tableListP.getItems().add(new Visit(visit.getID(), Integer.toString(i), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getImie(), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getNazwisko(), visit.getDate(), visit.getStatus()));
+                    i++;
+                }
 
             }
             columnTableLp.setCellValueFactory(new PropertyValueFactory<>("Ilosc"));
@@ -143,5 +154,10 @@ public class DoctrorWindowController implements Initializable {
             tableListP.setPlaceholder(new Label("Brak wyników z dnia " + datePicker.getValue().toString()));
             cantRefresh = false;
         }
+    }
+
+    public static void setIDDoctor(int Id) {
+        currentIdDoctor = Id;
+
     }
 }

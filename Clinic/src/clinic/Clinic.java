@@ -16,10 +16,11 @@ public class Clinic extends Application {
     
     @Override
     public void start(Stage Stage) throws IOException {
-       Parent root = FXMLLoader.load(getClass().getResource("LoginWindow.fxml"));
+       DoctrorWindowController.setIDDoctor(2);
+       Parent root = FXMLLoader.load(getClass().getResource("DoctorWindow.fxml"));
        Scene scene = new Scene(root);
        Stage.setScene(scene);
-       Stage.setTitle("OKNO LOGOWANIA");
+       //Stage.setTitle("OKNO LOGOWANIA");
        Stage.show(); 
     }
 

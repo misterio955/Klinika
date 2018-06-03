@@ -149,22 +149,25 @@ public class DatabaseConnection {
     public void registerPatient(String pesel, String firstName, String lastName, String email) {
         Patient patient = new Patient(String.valueOf(patientsList.size() + 1), pesel, firstName, lastName, email);
         patientsList.add(patient);
+        comparePatients();
     }
 
     public void comparePatients() {
+        int w = 0;
         for (int i = 0; i < patientsList.size(); i++) {
 
             if (i < patientsListCopy.size()) {
                 if (!patientsList.get(i).print().equals(patientsListCopy.get(i).print())) {
 
                     try {
+                        w++;
                         String query = "UPDATE pacjenci SET ID = '" + patientsList.get(i).getID() + "', Pesel = '" + patientsList.get(i).getPesel()
                                 + "', Imie = '" + patientsList.get(i).getImie() + "', Nazwisko = '" + patientsList.get(i).getNazwisko() + "', Email = '" + patientsList.get(i).getEmail()
                                 + "' WHERE ID = '" + patientsList.get(i).getID() + "';";
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
                         if (rs > 0) {
-                            JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
+                            //JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
                         } else {
                             JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
                         }
@@ -177,6 +180,7 @@ public class DatabaseConnection {
 
             } else {
                 try {
+                    w++;
                     String query = "INSERT INTO Pacjenci VALUES ('" + patientsList.get(i).getID() + "', '" + patientsList.get(i).getPesel() + "', '" + patientsList.get(i).getImie() + "', '" + patientsList.get(i).getNazwisko() + "', '" + patientsList.get(i).getEmail() + "');";
                     Statement stmnt = connection.createStatement();
                     int rs = stmnt.executeUpdate(query);
@@ -191,6 +195,7 @@ public class DatabaseConnection {
                 }
             }
         }
+        JOptionPane.showMessageDialog(null, "Zmodyfikowano "+w+" rekordów.");
     }
 
 //  DOCTORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -276,22 +281,25 @@ public class DatabaseConnection {
     public void registerDoctor(String firstName, String lastName, String password, String spec, String email, String room) {
         Doctor doctor = new Doctor(String.valueOf(doctorsList.size() + 1), firstName, lastName, password, spec, email, room);
         doctorsList.add(doctor);
+        compareDoctors();
     }
 
     public void compareDoctors() {
+        int w = 0;
         for (int i = 0; i < doctorsList.size(); i++) {
 
             if (i < doctorsListCopy.size()) {
                 if (!doctorsList.get(i).print().equals(doctorsListCopy.get(i).print())) {
 
                     try {
+                        w++;
                         String query = "UPDATE lekarze SET ID = '" + doctorsList.get(i).getID() + "', Imie = '" + doctorsList.get(i).getImie()
                                 + "', Nazwisko = '" + doctorsList.get(i).getNazwisko() + "', Haslo = '" + doctorsList.get(i).getPassword() + "', Specjalizacja = '" + doctorsList.get(i).getSpec() + "', Email = '" + doctorsList.get(i).getEmail()
                                 + "', Sala = '" + doctorsList.get(i).getRoom() + "' WHERE ID = '" + doctorsList.get(i).getID() + "';";
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
                         if (rs > 0) {
-                            JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
+                            //JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
                         } else {
                             JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
                         }
@@ -304,6 +312,7 @@ public class DatabaseConnection {
 
             } else {
                 try {
+                    w++;
                     String query = "INSERT INTO Lekarze VALUES ('" + doctorsList.get(i).getID() + "', '" + doctorsList.get(i).getImie() + "', '"
                             + doctorsList.get(i).getNazwisko() + "', '" + doctorsList.get(i).getPassword() + "', '" + doctorsList.get(i).getSpec() + "', '" + doctorsList.get(i).getEmail() + "', '" + doctorsList.get(i).getRoom() + "');";
                     Statement stmnt = connection.createStatement();
@@ -320,6 +329,7 @@ public class DatabaseConnection {
                 }
             }
         }
+     JOptionPane.showMessageDialog(null, "Zmodyfikowano "+w+" rekordów.");
     }
 
 // VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
@@ -387,9 +397,10 @@ public class DatabaseConnection {
 
     public void createVisit(Doctor doctor, Patient patient, String date) {
 
-        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getPesel(), date, "Oczekiwana");
+        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
         visitsList.add(visit);
         addDate(date, doctor);
+        compareVisits();
 
     }
 
@@ -411,22 +422,25 @@ public class DatabaseConnection {
         visit.setDate(date);
         visit.setStatus("Przelozona");
         addDate(date, getDoctorByID(visit.getID_Doc()));
+        compareVisits();
     }
 
     public void compareVisits() {
+        int w = 0;
         for (int i = 0; i < visitsList.size(); i++) {
 
             if (i < visitsListCopy.size()) {
                 if (!visitsList.get(i).print().equals(visitsListCopy.get(i).print())) {
 
                     try {
+                        w++;
                         String query = "UPDATE wizyty SET ID = '" + visitsList.get(i).getID() + "', ID_Lekarza= '" + visitsList.get(i).getID_Doc()
-                                + "', Pesel_pacjenta = '" + visitsList.get(i).getPesel_Pat() + "', Data_Wizyty = '" + visitsList.get(i).getDate() + "', Status_Wizyty = '" + visitsList.get(i).getStatus()
+                                + "', Pesel_Pacjenta = '" + visitsList.get(i).getPesel_Pat() + "', Data_Wizyty = '" + visitsList.get(i).getDate() + "', Status_Wizyty = '" + visitsList.get(i).getStatus()
                                 + "' WHERE ID = '" + visitsList.get(i).getID() + "';";
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
                         if (rs > 0) {
-                            JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
+                           // JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
                         } else {
                             JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
                         }
@@ -439,6 +453,7 @@ public class DatabaseConnection {
 
             } else {
                 try {
+                    w++;
                     String query = "INSERT INTO Wizyty VALUES ('" + visitsList.get(i).getID() + "', '"
                             + visitsList.get(i).getID_Doc() + "', '" + visitsList.get(i).getPesel_Pat() + "', '"
                             + visitsList.get(i).getDate() + "', '" + visitsList.get(i).getStatus() + "');";
@@ -457,6 +472,7 @@ public class DatabaseConnection {
                 }
             }
         }
+        JOptionPane.showMessageDialog(null, "Zmodyfikowano "+w+" rekordów.");
     }
 
 //DATES
