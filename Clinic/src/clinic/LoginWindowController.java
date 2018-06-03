@@ -74,7 +74,7 @@ public class LoginWindowController extends Clinic implements Initializable {
     private void loginAdmin(ActionEvent e) {
         if (loginAdmin.getText().equals("admin") && passwordAdmin.getText().equals("admin")) {
             try {
-                ;
+
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
