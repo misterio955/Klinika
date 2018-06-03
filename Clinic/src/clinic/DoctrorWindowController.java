@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ public class DoctrorWindowController implements Initializable {
             dbConn.setPatientsList();
             dbConn.setVisitsList();
             dbConn.updateCopyLists();
+            dbConn.setDatePicker(datePicker);
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(RegisterWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,9 +112,14 @@ public class DoctrorWindowController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = datePicker.getValue();
         List<Visit> list = dbConn.getVisitByDate(formatter.format(date));
-
+        List<Visit> listByDoctor = new ArrayList<Visit>();
+        for (Visit visit: list){
+            if(visit.getID_Doc().equals(Integer.toString(currentIdDoctor))) {
+                listByDoctor.add(visit);
+            }
+        }
         if (date.compareTo(LocalDate.now()) >= 0) {
-            showTableList(dbConn.getVisitByDate(formatter.format(date)));
+            showTableList(listByDoctor);
         } else {
             tableListP.setPlaceholder(new Label("Nie można wyszukać wcześniejszych wizyt"));
             alert.setTitle("Uwaga!");
@@ -125,10 +132,19 @@ public class DoctrorWindowController implements Initializable {
 
     //Default value
     private void defaultDate() {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<Visit> list = dbConn.getVisitByDate(LocalDate.now().toString());
-        if (!list.isEmpty()) {
-            showTableList(list);
+        List<Visit> listByDoctor = new ArrayList<Visit>();
+
+        for (Visit visit: list){
+            if(visit.getID_Doc().equals(Integer.toString(currentIdDoctor)))
+            listByDoctor.add(visit);
+        }
+
+        dbConn.showList(listByDoctor);
+        if (!listByDoctor.isEmpty()) {
+            showTableList(listByDoctor);
         } else {
             tableListP.setPlaceholder(new Label("Nie ma wizyt w dniu dzisiejszym"));
         }
@@ -143,7 +159,6 @@ public class DoctrorWindowController implements Initializable {
                     tableListP.getItems().add(new Visit(visit.getID(), Integer.toString(i), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getImie(), dbConn.getPatientByPESEL(visit.getPesel_Pat()).getNazwisko(), visit.getDate(), visit.getStatus()));
                     i++;
                 }
-
             }
             columnTableLp.setCellValueFactory(new PropertyValueFactory<>("Ilosc"));
             columnTableNameP.setCellValueFactory(new PropertyValueFactory<>("Imie"));
