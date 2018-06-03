@@ -102,7 +102,7 @@
                               <TableColumn id="Data_visit" fx:id="columnVisitDate" prefWidth="202.0" text="Data wizyty" />
                            </columns>
                         </TableView>
-                        <Button fx:id="buttonChangeDataViisit" layoutX="15.0" layoutY="525.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="350.0" text="Zmien wizyte" />
+                        <Button fx:id="buttonChangeDataViisit" layoutX="15.0" layoutY="525.0" mnemonicParsing="false" onAction="#changeDateVisit" prefHeight="30.0" prefWidth="350.0" text="Zmien wizyte" />
                         <DatePicker fx:id="datePicker" layoutX="585.0" layoutY="100.0" onAction="#choseData" prefHeight="25.0" prefWidth="200.0" />
                         <TableView fx:id="tableHoursAndMinutes" layoutX="585.0" layoutY="150.0" prefHeight="360.0" prefWidth="200.0">
                            <columns>
