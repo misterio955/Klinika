@@ -5,41 +5,34 @@
  */
 package clinic;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  *
  * @author Basian
  */
-public class TestDoctorWindowController {
-    
+public class TestDoctorWindowController extends TestCase{
+
     public TestDoctorWindowController() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    private static int currentIdDoctor ;
+
+   
+    
+    public void setUp() {
+        currentIdDoctor = 0;
+    }
+
+    public void testSetIDDoctor() {
+           int expected = currentIdDoctor;
+          // DoctrorWindowController.setIDDoctor(0);
+           int result = currentIdDoctor;
+           Assert.assertTrue(expected == result);
+           Assert.assertFalse(expected!= result);
+        
+    }
+    
 }

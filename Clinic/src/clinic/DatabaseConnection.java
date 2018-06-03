@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.DateCell;
@@ -93,6 +94,38 @@ public class DatabaseConnection {
                     }
                 };
         datePicker.setDayCellFactory(dayCellFactory);
+    }
+
+    public void makeXVisitsPerMonth(int howMany) {
+        int docs = getDoctorsList().size();
+        int pats = getPatientsList().size();
+        int vis = getVisitsList().size();
+        int dat = getDatesList().size();
+        Random rd = new Random();
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < howMany; i++) {
+            int docID = rd.nextInt(docs);
+            //getDoctorssList().get(docID).print() +"   "+ docID;
+            int patID = rd.nextInt(pats);
+            //getPatientsList().get(patID);
+            String day = String.valueOf(rd.nextInt(29) + 1);
+            String date = "";
+            String hour = getDatesList().get(1).getHours().get(rd.nextInt(32));
+            if (Integer.valueOf(day) < 10) {
+                 date = "2018-06-0" + day + " " + hour;
+            } else {
+                 date = "2018-06-" + day + " " + hour;
+            }
+
+            if (list.contains(date)) {
+            } else {
+                list.add(date);
+                createVisit(getDoctorsList().get(docID), getPatientsList().get(patID), date);
+                //System.out.println(date);
+            }
+
+        }
+
     }
 
 // PATIENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,7 +228,7 @@ public class DatabaseConnection {
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, "Zmodyfikowano "+w+" rekordów.");
+        JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
     }
 
 //  DOCTORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -329,7 +362,7 @@ public class DatabaseConnection {
                 }
             }
         }
-     JOptionPane.showMessageDialog(null, "Zmodyfikowano "+w+" rekordów.");
+        JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
     }
 
 // VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
@@ -397,10 +430,10 @@ public class DatabaseConnection {
 
     public void createVisit(Doctor doctor, Patient patient, String date) {
 
-        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getID(), date, "Oczekiwana");
+        Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getPesel(), date, "Oczekiwana");
         visitsList.add(visit);
         addDate(date, doctor);
-        compareVisits();
+        
 
     }
 
@@ -440,7 +473,7 @@ public class DatabaseConnection {
                         Statement stmnt = connection.createStatement();
                         int rs = stmnt.executeUpdate(query);
                         if (rs > 0) {
-                           // JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
+                            // JOptionPane.showMessageDialog(null, "Zmodyfikowano termin wizyty." + rs);
                         } else {
                             JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas modyfikowania wizyty.");
                         }
@@ -472,7 +505,7 @@ public class DatabaseConnection {
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, "Zmodyfikowano "+w+" rekordów.");
+        JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
     }
 
 //DATES
