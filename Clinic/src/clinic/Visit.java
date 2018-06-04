@@ -54,8 +54,8 @@ public class Visit implements IComponent {
         return Pesel_PatProperty().get();
     }
 
-    public final void setPesel_Pat(String ID) {
-        Pesel_PatProperty().set(ID);
+    public final void setPesel_Pat(String Pesel) {
+        Pesel_PatProperty().set(Pesel);
     }
 
     //--------------------------------------------------
@@ -152,7 +152,7 @@ public class Visit implements IComponent {
 
 
     public String print() {
-        return "ID=" + getID() + ", ID_Doc=" + getID_Doc() + ", ID_Pat=" + getPesel_Pat() + ", date=" + getDate() + ", status=" + getStatus();
+        return "ID=" + getID() + ", ID_Doc=" + getID_Doc() + ", Pesel_Pat=" + getPesel_Pat() + ", date=" + getDate() + ", status=" + getStatus();
     }
 
 }
