@@ -40,7 +40,7 @@ public class DoctorWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
 
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
@@ -183,7 +183,7 @@ public class DoctorWindowController implements Initializable {
         currentIdDoctor = Id;
 
     }
-
+    @FXML
     private void generatePDF() {
 
         LocalDate date = LocalDate.now();
