@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -34,18 +35,18 @@
                         <Label layoutX="482.0" layoutY="126.0" prefHeight="25.0" prefWidth="90.0" text="e-mail" />
                         <TextField fx:id="textNameRD" layoutX="571.0" layoutY="36.0" prefHeight="20.0" prefWidth="150.0" promptText="Podaj imie" />
                         <TextField fx:id="textSurnameRD" layoutX="571.0" layoutY="66.0" promptText="Podaj Nazwisko" />
-                        <TextField fx:id="textSpecRD" layoutX="571.0" layoutY="96.0" promptText="Podaj Pesel" />
                         <TextField fx:id="textEmailRD" layoutX="572.0" layoutY="126.0" promptText="Podaj e-mail" />
                         <Label layoutX="482.0" layoutY="154.0" prefHeight="25.0" prefWidth="90.0" text="Sala" />
                         <TextField fx:id="textRoomRD" layoutX="572.0" layoutY="154.0" promptText="Podaj e-mail" />
                         <Label layoutX="482.0" layoutY="190.0" prefHeight="25.0" prefWidth="90.0" text="Hasło" />
                         <TextField fx:id="textPasswordRD" layoutX="572.0" layoutY="190.0" promptText="Podaj e-mail" />
                         <Button fx:id="buttonRegisterD" layoutX="481.0" layoutY="225.0" mnemonicParsing="false" onAction="#registerButtonD" prefHeight="30.0" prefWidth="240.0" text="Rejestruj lekarza" />
+                        <ComboBox fx:id="comboBoxSpecDR" layoutX="571.0" layoutY="96.0" prefWidth="150.0" promptText="Specjalizacja" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab id="List_Tab" fx:id="tabListPatient" text="Lista pacjentów">
+          <Tab id="List_Tab" fx:id="tabListPatient" onSelectionChanged="#listAllPatients" text="Lista pacjentów">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -57,15 +58,14 @@
                               <TableColumn id="E_mail" fx:id="columnTableEmailP" prefWidth="350.0" text="e-mail" />
                           </columns>
                         </TableView>
-                        <Button fx:id="buttonFindPeselP" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" onAction="#findPeselP" prefHeight="25.0" prefWidth="150.0" text="Znajdz pesel" />
+                        <Button fx:id="buttonFindPeselP" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" onAction="#findButton" prefHeight="65.0" prefWidth="150.0" text="Szukaj pacjenta" />
                         <TextField fx:id="textFindPeselP" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="550.0" promptText="Wpisz pesel" />
                         <TextField fx:id="textFindNameP" alignment="TOP_CENTER" layoutX="15.0" layoutY="50.0" prefHeight="25.0" prefWidth="270.0" promptText="Wpisz imie" />
-                        <Button fx:id="buttonFindNameP" layoutX="610.0" layoutY="50.0" mnemonicParsing="false" onAction="#findInicialP" prefHeight="25.0" prefWidth="150.0" text="Znajdz inicjały" />
                         <TextField fx:id="textFindSurnameP" alignment="TOP_CENTER" layoutX="295.0" layoutY="50.0" prefHeight="25.0" prefWidth="270.0" promptText="Wpisz nazwisko" />
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="tabListDoctror" text="Lista lekarzy">
+            <Tab fx:id="tabListDoctror" onSelectionChanged="#listAllDoctors" text="Lista lekarzy">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -82,10 +82,10 @@
                         <Button fx:id="buttonFindName" layoutX="610.0" layoutY="15.0" mnemonicParsing="false" onAction="#findInciationD" prefHeight="25.0" prefWidth="150.0" text="Znajdz inicjały" />
                         <TextField fx:id="textFindNameD" alignment="TOP_CENTER" layoutX="15.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj imie" />
                         <TextField fx:id="textFindSurnameD" alignment="TOP_CENTER" layoutX="300.0" layoutY="15.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nazwisko" />
-                        <TextField fx:id="textFindSpecializationD" alignment="TOP_CENTER" layoutX="15.0" layoutY="50.0" prefHeight="25.0" prefWidth="560.0" promptText="Wpisz specjalizacje lekarza" />
                         <Button fx:id="buttonFindSpecializationD" layoutX="610.0" layoutY="50.0" mnemonicParsing="false" onAction="#findSpecializationD" prefHeight="25.0" prefWidth="150.0" text="Znajdz specjalizacje" />
                         <TextField fx:id="textFindNrRoomD" alignment="TOP_CENTER" layoutX="158.0" layoutY="85.0" prefHeight="25.0" prefWidth="275.0" promptText="Podaj nr pokoju" />
                         <Button fx:id="buttonFindRoomD" layoutX="610.0" layoutY="85.0" mnemonicParsing="false" onAction="#findNrRoomD" prefHeight="25.0" prefWidth="150.0" text="Znajdz pokój" />
+                        <ComboBox fx:id="comboBoxSpecDF" layoutX="16.0" layoutY="50.0" prefHeight="25.0" prefWidth="560.0" promptText="Specjalizacja" style="-fx-alignment: CENTER;" />
                      </children>
                   </AnchorPane>
                </content>

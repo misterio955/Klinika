@@ -1,5 +1,6 @@
 package clinic;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,13 +11,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Collections;
 
 public class RegisterWindowController implements Initializable {
 
@@ -39,11 +39,11 @@ public class RegisterWindowController implements Initializable {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(RegisterWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        tableListP.setPlaceholder(new Label("Brak wynikow"));
-        tableListD.setPlaceholder(new Label("Brak wynikow"));
+//        tableListP.setPlaceholder(new Label("Brak wynikow"));
+//        tableListD.setPlaceholder(new Label("Brak wynikow"));
         tableListVisit.setPlaceholder(new Label("Brak wynikow"));
         tableHoursAndMinutes.setPlaceholder(new Label("Brak wynikow"));
-        dbConn.showList(dbConn.getPatientsList());
+        comboBoxValue();
     }
 
     //    REGISTER
@@ -66,7 +66,7 @@ public class RegisterWindowController implements Initializable {
     private TextField textSurnameRD;
 
     @FXML
-    private TextField textSpecRD;
+    private ComboBox<String> comboBoxSpecDR;
 
     @FXML
     private TextField textEmailRD;
@@ -114,11 +114,11 @@ public class RegisterWindowController implements Initializable {
     private void registerButtonD(ActionEvent event) {
         if (isLetterOnly(textNameRD.getText())) {
             if (isLetterOnly(textSurnameRD.getText())) {
-                if (isLetterOnly(textSpecRD.getText())) {
+                if (comboBoxSpecDF.getItems().isEmpty()) {
                     if (isEmail(textEmailRD.getText())) {
                         if (isNumbersOnly(textRoomRD.getText())) {
                             if (textPasswordRD.getLength() >= 7) {
-                                dbConn.registerDoctor(textNameRD.getText(), textSurnameRD.getText(), textPasswordRD.getText(), textSpecRD.getText(), textEmailRD.getText(), textRoomRD.getText());
+                                dbConn.registerDoctor(textNameRD.getText(), textSurnameRD.getText(), textPasswordRD.getText(), comboBoxSpecDF.getSelectionModel().getSelectedItem(), textEmailRD.getText(), textRoomRD.getText());
                                 //dbConn.compareDoctors();
                             } else {
                                 alert.setTitle("Uwaga!");
@@ -178,47 +178,30 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private TableColumn<Patient, String> columnTableEmailP;
 
+
+
     @FXML
-    private void findPeselP(ActionEvent event) {
+    private void findButton(ActionEvent event) {
         tableListP.getItems().clear();
-        String sumString = textFindPeselP.getText();
-
-        //Sprawdzenie czy pesel ma 11 znakow i czy jest w bazie
-        if (textFindPeselP.getLength() == 11 && dbConn.getPatientByPESEL(textFindPeselP.getText()) != null && isNumbersOnly(sumString)) {
-            Patient patient = dbConn.getPatientByPESEL(textFindPeselP.getText());
-
-            tableListP.getItems().add(new Patient(patient.getID(), patient.getPesel(), patient.getImie(), patient.getNazwisko(), patient.getEmail()));
-
-            columnTablePeselP.setCellValueFactory(new PropertyValueFactory<>("Pesel"));
-            columnTableNameP.setCellValueFactory(new PropertyValueFactory<>("Imie"));
-            columnTableSurnameP.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
-            columnTableEmailP.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        String sumLetter = textFindNameP.getText() + textFindSurnameP.getText();
+        if (isNumbersOnly(textFindPeselP.getText()) || textFindPeselP.getText().isEmpty()) {
+            if (isLetterOnly(sumLetter) || sumLetter.isEmpty()) {
+                findPacient(dbConn.getPatientByPESELList(textFindPeselP.getText()),dbConn.getPatientByName(textFindNameP.getText(),textFindSurnameP.getText()));
+            } else {
+                alert.setTitle("Uwaga!");
+                alert.setHeaderText("Błąd w polu imie lub nazwisko");
+                alert.setContentText("Podane imie lub naziwsko zawiera błąd lub nie ma go w bazie");
+                alert.showAndWait();
+                tableListP.setPlaceholder(new Label("Brak wynikow"));
+            }
         } else {
             alert.setTitle("Nieprawidłowa długość peselu");
             alert.setHeaderText("Błąd w polu pesel");
             alert.setContentText("Podany pesel jest błędny lub nie ma takiego pacjenta w bazie");
             alert.showAndWait();
             tableListP.setPlaceholder(new Label("Brak wynikow"));
+
         }
-
-    }
-
-    @FXML
-    private void findInicialP(ActionEvent event) {
-        tableListP.getItems().clear();
-
-        String sumString = textFindNameP.getText().toLowerCase() + textFindSurnameP.getText().toLowerCase();
-
-        if (dbConn.getPatientByName(textFindNameP.getText(), textFindSurnameP.getText()) != null && isLetterOnly(sumString) == true) {
-            listForPatient(dbConn.getPatientByName(textFindNameP.getText(), textFindSurnameP.getText()));
-        } else {
-            alert.setTitle("Uwaga!");
-            alert.setHeaderText("Błąd w polu imie lub nazwisko");
-            alert.setContentText("Podane imie lub naziwsko zawiera błąd lub nie ma go w bazie");
-            alert.showAndWait();
-            tableListP.setPlaceholder(new Label("Brak wynikow"));
-        }
-
     }
 
     //LIST DOCTOR
@@ -227,7 +210,7 @@ public class RegisterWindowController implements Initializable {
     @FXML
     TextField textFindSurnameD;
     @FXML
-    TextField textFindSpecializationD;
+    ComboBox<String> comboBoxSpecDF;
     @FXML
     TextField textFindNrRoomD;
 
@@ -266,10 +249,10 @@ public class RegisterWindowController implements Initializable {
     private void findSpecializationD(ActionEvent event) {
         tableListD.getItems().clear();
 
-        String sumText = textFindSpecializationD.getText().toLowerCase();
+        String sumText = comboBoxSpecDF.getSelectionModel().getSelectedItem().toLowerCase();
 
-        if (dbConn.getDoctorBySpec(textFindSpecializationD.getText()) != null && isLetterOnly(sumText)) {
-            listForDoctor(dbConn.getDoctorBySpec(textFindSpecializationD.getText()));
+        if (dbConn.getDoctorBySpec(comboBoxSpecDF.getSelectionModel().getSelectedItem()) != null && isLetterOnly(sumText)) {
+            listForDoctor(dbConn.getDoctorBySpec(comboBoxSpecDF.getSelectionModel().getSelectedItem()));
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Błąd w polu Specjalizacja");
@@ -328,7 +311,7 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private void visitListPatient() {
 
-        listForPatient();
+        listForPatientVisit();
         if (!tableListD.getSelectionModel().isEmpty())
             informationD.setText(tableListD.getSelectionModel().getSelectedItem().getImie() + " " + tableListD.getSelectionModel().getSelectedItem().getNazwisko() + " " + tableListD.getSelectionModel().getSelectedItem().getSpec());
     }
@@ -346,7 +329,8 @@ public class RegisterWindowController implements Initializable {
         if (!tableHoursAndMinutes.getSelectionModel().getSelectedItem().isEmpty() && !tableListD.getSelectionModel().isEmpty() && !tableListP.getSelectionModel().isEmpty()) {
             dbConn.createVisit(dbConn.getDoctorByID(tableListD.getSelectionModel().getSelectedItem().getID()), dbConn.getPatientByPESEL(tableListP.getSelectionModel().getSelectedItem().getPesel()), str);
             doListForTime();
-            listForPatient();
+            listForPatientVisit();
+
             dbConn.compareLists();
         } else {
             alert.setTitle("Uwaga!");
@@ -365,7 +349,7 @@ public class RegisterWindowController implements Initializable {
         if (!tableHoursAndMinutes.getSelectionModel().getSelectedItem().isEmpty() && !tableListD.getSelectionModel().isEmpty() && !tableListP.getSelectionModel().isEmpty()) {
             dbConn.changeVisitDate(dbConn.getVisitByID(tableListVisit.getSelectionModel().getSelectedItem().getID()), str);
             doListForTime();
-            listForPatient();
+            listForPatientVisit();
             dbConn.compareLists();
         } else {
             alert.setTitle("Uwaga!");
@@ -468,7 +452,7 @@ public class RegisterWindowController implements Initializable {
     }
 
     //Metoda w której uzywamy listForPatient w odpowiedni sposób
-    private void listForPatient() {
+    private void listForPatientVisit() {
         tableListVisit.getItems().clear();
         if (!tableListP.getSelectionModel().isEmpty()) {
             informationP.setText(tableListP.getSelectionModel().getSelectedItem().getImie() + " " + tableListP.getSelectionModel().getSelectedItem().getNazwisko());
@@ -496,5 +480,43 @@ public class RegisterWindowController implements Initializable {
 
 
         }
+    }
+
+    @FXML
+    private void listAllPatients() {
+        if (tableListP.getItems().isEmpty()) {
+            System.out.println("XD");
+            listForPatient(dbConn.getPatientsList());
+        }
+    }
+
+    @FXML
+    private void listAllDoctors() {
+        if (tableListD.getItems().isEmpty()) {
+            listForDoctor(dbConn.getDoctorsList());
+        }
+    }
+
+    private void findPacient(List<Patient> listPatientPesel, List<Patient> listPatientName) {
+        List<Patient> listPatient = new ArrayList<>();
+        Set<Patient> listPatientCollection = new HashSet<>();
+
+        listPatientCollection.addAll(listPatientPesel);
+        listPatientCollection.addAll(listPatientName);
+        for (Patient list : listPatientCollection){
+            if(list.getPesel().contains(textFindPeselP.getText()) && list.getImie().contains(textFindNameP.getText()) && list.getNazwisko().contains(textFindSurnameP.getText())){
+                listPatient.add(list);
+            }
+        }
+        listForPatient(listPatient);
+
+    }
+
+    private void comboBoxValue(){
+        comboBoxSpecDR.getItems().add("Okulista");
+        comboBoxSpecDR.getItems().add("Ginekolog");
+        comboBoxSpecDR.getItems().add("Dentysta");
+        comboBoxSpecDR.getItems().add("Ortopeda");
+        comboBoxSpecDR.getItems().add("Dermatolog");
     }
 }
