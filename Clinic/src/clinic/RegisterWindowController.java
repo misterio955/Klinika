@@ -22,6 +22,7 @@ public class RegisterWindowController implements Initializable {
 
     private Alert alert = new Alert(Alert.AlertType.WARNING);
     private DatabaseConnection dbConn;
+    private List<String> listOfSpecDoctor = new ArrayList<>();
 
     //cj.
     //?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
@@ -39,10 +40,10 @@ public class RegisterWindowController implements Initializable {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(RegisterWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        tableListP.setPlaceholder(new Label("Brak wynikow"));
-//        tableListD.setPlaceholder(new Label("Brak wynikow"));
+
         tableListVisit.setPlaceholder(new Label("Brak wynikow"));
         tableHoursAndMinutes.setPlaceholder(new Label("Brak wynikow"));
+        valueListSpec();
         comboBoxValue();
     }
 
@@ -114,7 +115,7 @@ public class RegisterWindowController implements Initializable {
     private void registerButtonD(ActionEvent event) {
         if (isLetterOnly(textNameRD.getText())) {
             if (isLetterOnly(textSurnameRD.getText())) {
-                if (comboBoxSpecDF.getItems().isEmpty()) {
+                if (!comboBoxSpecDR.getSelectionModel().isEmpty()) {
                     if (isEmail(textEmailRD.getText())) {
                         if (isNumbersOnly(textRoomRD.getText())) {
                             if (textPasswordRD.getLength() >= 7) {
@@ -142,7 +143,7 @@ public class RegisterWindowController implements Initializable {
                 } else {
                     alert.setTitle("Uwaga!");
                     alert.setHeaderText("Pole Specjalizaca");
-                    alert.setContentText("W polu specjalizacja można używac tylko liter");
+                    alert.setContentText("Prosze wybrac specjalizacje");
                     alert.showAndWait();
                 }
             } else {
@@ -179,14 +180,13 @@ public class RegisterWindowController implements Initializable {
     private TableColumn<Patient, String> columnTableEmailP;
 
 
-
     @FXML
     private void findButton(ActionEvent event) {
         tableListP.getItems().clear();
         String sumLetter = textFindNameP.getText() + textFindSurnameP.getText();
         if (isNumbersOnly(textFindPeselP.getText()) || textFindPeselP.getText().isEmpty()) {
             if (isLetterOnly(sumLetter) || sumLetter.isEmpty()) {
-                findPacient(dbConn.getPatientByPESELList(textFindPeselP.getText()),dbConn.getPatientByName(textFindNameP.getText(),textFindSurnameP.getText()));
+                findPacient(dbConn.getPatientByPESELList(textFindPeselP.getText()), dbConn.getPatientByName(textFindNameP.getText(), textFindSurnameP.getText()));
             } else {
                 alert.setTitle("Uwaga!");
                 alert.setHeaderText("Błąd w polu imie lub nazwisko");
@@ -229,56 +229,34 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private TableColumn<Doctor, String> columnTableNrRoomD;
 
+
     @FXML
-    private void findInciationD(ActionEvent event) {
+    private void findButtonDoctor(ActionEvent event) {
         tableListD.getItems().clear();
         String sumText = textFindNameD.getText().toLowerCase() + textFindSurnameD.getText().toLowerCase();
-        //Sprawdzanie czy jest taki Lekarz w bazie i uzupelnianie tabeli
-        if (dbConn.getDoctorByName(textFindNameD.getText(), textFindSurnameD.getText()) != null && isLetterOnly(sumText)) {
-            listForDoctor(dbConn.getDoctorByName(textFindNameD.getText(), textFindSurnameD.getText()));
+        if (isNumbersOnly(textFindNrRoomD.getText()) || textFindNrRoomD.getText().isEmpty()) {
+            if (isLetterOnly(sumText) || sumText.isEmpty()) {
+                if (!comboBoxSpecDF.getSelectionModel().isEmpty()) {
+                    findDoctor(dbConn.getDoctorByName(textFindNameD.getText(), textFindSurnameD.getText()),
+                            dbConn.getDoctorBySpec(comboBoxSpecDF.getSelectionModel().getSelectedItem()), dbConn.getDoctorByRoom(textFindNrRoomD.getText()));
+                } else {
+                    findDoctor(dbConn.getDoctorByName(textFindNameD.getText(), textFindSurnameD.getText()),
+                            dbConn.getDoctorBySpec(" "), dbConn.getDoctorByRoom(textFindNrRoomD.getText()));
+                }
+            } else {
+                alert.setTitle("Uwaga!");
+                alert.setHeaderText("Błąd w polu nr pokoju");
+                alert.setContentText("Podana nr jest błedny");
+                alert.showAndWait();
+                tableListD.setPlaceholder(new Label("Brak wynikow"));
+            }
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Błąd w polu imie lub nazwisko");
-            alert.setContentText("Podane imie lub naziwsko zawiera błąd lub nie ma go w bazie");
+            alert.setContentText("Podane imie lub naziwsko zawiera błąd");
             alert.showAndWait();
             tableListD.setPlaceholder(new Label("Brak wynikow"));
         }
-    }
-
-    @FXML
-    private void findSpecializationD(ActionEvent event) {
-        tableListD.getItems().clear();
-
-        String sumText = comboBoxSpecDF.getSelectionModel().getSelectedItem().toLowerCase();
-
-        if (dbConn.getDoctorBySpec(comboBoxSpecDF.getSelectionModel().getSelectedItem()) != null && isLetterOnly(sumText)) {
-            listForDoctor(dbConn.getDoctorBySpec(comboBoxSpecDF.getSelectionModel().getSelectedItem()));
-        } else {
-            alert.setTitle("Uwaga!");
-            alert.setHeaderText("Błąd w polu Specjalizacja");
-            alert.setContentText("Podana specjalizacja jest błędna lub nie ma jej bazie");
-            alert.showAndWait();
-            tableListD.setPlaceholder(new Label("Brak wynikow"));
-        }
-
-    }
-
-    @FXML
-    private void findNrRoomD(ActionEvent event) {
-        tableListD.getItems().clear();
-
-        String sumText = textFindNrRoomD.getText().toLowerCase();
-        System.out.println(isNumbersOnly(sumText));
-        if (dbConn.getDoctorByRoom(textFindNrRoomD.getText()) != null && isNumbersOnly(sumText)) {
-            listForDoctor(dbConn.getDoctorByRoom(textFindNrRoomD.getText()));
-        } else {
-            alert.setTitle("Uwaga!");
-            alert.setHeaderText("Błąd w polu Specjalizacja");
-            alert.setContentText("Podana specjalizacja jest błędna lub nie ma jej bazie");
-            alert.showAndWait();
-            tableListD.setPlaceholder(new Label("Brak wynikow"));
-        }
-
     }
 
     //VISIT
@@ -401,28 +379,36 @@ public class RegisterWindowController implements Initializable {
 
     //Lista dla pacjentow do uzycia
     private void listForPatient(List<Patient> list) {
-        for (Patient patientTab : list) {
-            tableListP.getItems().add(new Patient(patientTab.getID(), patientTab.getPesel(), patientTab.getImie(), patientTab.getNazwisko(), patientTab.getEmail()));
-        }
+        if (!list.isEmpty()) {
+            for (Patient patientTab : list) {
+                tableListP.getItems().add(new Patient(patientTab.getID(), patientTab.getPesel(), patientTab.getImie(), patientTab.getNazwisko(), patientTab.getEmail()));
+            }
 
-        columnTablePeselP.setCellValueFactory(new PropertyValueFactory<>("Pesel"));
-        columnTableNameP.setCellValueFactory(new PropertyValueFactory<>("Imie"));
-        columnTableSurnameP.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
-        columnTableEmailP.setCellValueFactory(new PropertyValueFactory<>("Email"));
+            columnTablePeselP.setCellValueFactory(new PropertyValueFactory<>("Pesel"));
+            columnTableNameP.setCellValueFactory(new PropertyValueFactory<>("Imie"));
+            columnTableSurnameP.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
+            columnTableEmailP.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        } else {
+            tableListP.setPlaceholder(new Label("Brak wyników"));
+        }
     }
 
     //Lista dla lekarzy
     private void listForDoctor(List<Doctor> list) {
-        for (Doctor doctorTab : list) {
-            tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getEmail(), doctorTab.getRoom()));
-        }
+        if (!list.isEmpty()) {
+            for (Doctor doctorTab : list) {
+                tableListD.getItems().add(new Doctor(doctorTab.getID(), doctorTab.getImie(), doctorTab.getNazwisko(), doctorTab.getSpec(), doctorTab.getEmail(), doctorTab.getRoom()));
+            }
 
-        columnTableIDD.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
-        columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
-        columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
-        columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
-        columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Email"));
+            columnTableIDD.setCellValueFactory(new PropertyValueFactory<>("ID"));
+            columnTableNameD.setCellValueFactory(new PropertyValueFactory<>("Imie"));
+            columnTableSurnameD.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
+            columnTableSpecializationD.setCellValueFactory(new PropertyValueFactory<>("Spec"));
+            columnTableNrRoomD.setCellValueFactory(new PropertyValueFactory<>("Room"));
+            columnTablePhoneD.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        } else {
+            tableListD.setPlaceholder(new Label("Brak wyników"));
+        }
     }
 
     //Lista dotyczaca Godzin
@@ -503,8 +489,8 @@ public class RegisterWindowController implements Initializable {
 
         listPatientCollection.addAll(listPatientPesel);
         listPatientCollection.addAll(listPatientName);
-        for (Patient list : listPatientCollection){
-            if(list.getPesel().contains(textFindPeselP.getText()) && list.getImie().contains(textFindNameP.getText()) && list.getNazwisko().contains(textFindSurnameP.getText())){
+        for (Patient list : listPatientCollection) {
+            if (list.getPesel().contains(textFindPeselP.getText()) && list.getImie().contains(textFindNameP.getText()) && list.getNazwisko().contains(textFindSurnameP.getText())) {
                 listPatient.add(list);
             }
         }
@@ -512,11 +498,42 @@ public class RegisterWindowController implements Initializable {
 
     }
 
-    private void comboBoxValue(){
-        comboBoxSpecDR.getItems().add("Okulista");
-        comboBoxSpecDR.getItems().add("Ginekolog");
-        comboBoxSpecDR.getItems().add("Dentysta");
-        comboBoxSpecDR.getItems().add("Ortopeda");
-        comboBoxSpecDR.getItems().add("Dermatolog");
+    private void findDoctor(List<Doctor> listDoctorName, List<Doctor> listDoctorSpec, List<Doctor> listDoctorRoom) {
+        List<Doctor> listDoctor = new ArrayList<>();
+        Set<Doctor> listDoctorCollection = new HashSet<>();
+
+        listDoctorCollection.addAll(listDoctorName);
+        listDoctorCollection.addAll(listDoctorSpec);
+        listDoctorCollection.addAll(listDoctorRoom);
+        for (Doctor list : listDoctorCollection) {
+            if (!comboBoxSpecDF.getSelectionModel().isEmpty()) {
+                if (list.getSpec().contains(comboBoxSpecDF.getSelectionModel().getSelectedItem()) && list.getImie().toLowerCase().contains(textFindNameD.getText().toLowerCase())
+                        && list.getNazwisko().toLowerCase().contains(textFindSurnameD.getText().toLowerCase()) && list.getRoom().contains(textFindNrRoomD.getText())) {
+                    listDoctor.add(list);
+                }
+            } else {
+                if (list.getImie().toLowerCase().contains(textFindNameD.getText().toLowerCase())
+                        && list.getNazwisko().toLowerCase().contains(textFindSurnameD.getText().toLowerCase()) && list.getRoom().contains(textFindNrRoomD.getText())) {
+                    listDoctor.add(list);
+                }
+            }
+        }
+        listForDoctor(listDoctor);
+    }
+
+    private void valueListSpec() {
+        listOfSpecDoctor.add("Okulista");
+        listOfSpecDoctor.add("Ginekolog");
+        listOfSpecDoctor.add("Dentysta");
+        listOfSpecDoctor.add("Ortopeda");
+        listOfSpecDoctor.add("Dermatolog");
+    }
+
+    private void comboBoxValue() {
+        for (String list : listOfSpecDoctor) {
+            comboBoxSpecDF.getItems().add(list);
+            comboBoxSpecDR.getItems().add(list);
+        }
+
     }
 }
