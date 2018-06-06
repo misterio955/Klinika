@@ -17,6 +17,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginWindowController extends Clinic implements Initializable {
     private Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -29,7 +31,7 @@ public class LoginWindowController extends Clinic implements Initializable {
 
     public void connect() {
         try {
-            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
             System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
@@ -74,13 +76,14 @@ public class LoginWindowController extends Clinic implements Initializable {
     @FXML
     private void loginAdmin(ActionEvent e) {
         
-        if (loginAdmin.getText().equals("admin") && passwordAdmin.getText().equals("admin")) {
+        if (isCorrectCharacters(loginAdmin.getText()) && isCorrectCharacters(passwordAdmin.getText()) &&loginAdmin.getText().equals("admin") && passwordAdmin.getText().equals("admin")) {
             try {
-               // showPatientas();
+
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));
+                stage.setTitle("Rejestracja");
                 stage.show();
                 Clinic.window.hide();
                 ((Node) (e.getSource())).getScene().getWindow().hide();
@@ -104,13 +107,14 @@ public class LoginWindowController extends Clinic implements Initializable {
     private void loginDoctor(ActionEvent event) {
 
 
-        if (dbConn.getDoctorByID(loginDoctor.getText()) != null && dbConn.getDoctorByID(loginDoctor.getText()).getPassword().equals(passwordDoctor.getText())) {
+        if (isCorrectCharacters(loginDoctor.getText()) && isCorrectCharacters(passwordDoctor.getText()) && dbConn.getDoctorByID(loginDoctor.getText()) != null && dbConn.getDoctorByID(loginDoctor.getText()).getPassword().equals(passwordDoctor.getText())) {
             DoctorWindowController.setIDDoctor(Integer.valueOf(dbConn.getDoctorByID(loginDoctor.getText()).getID()));
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DoctorWindow.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));
+                stage.setTitle("Lekarz");
                 stage.show();
                 Clinic.window.hide();
                 ((Node) (event.getSource())).getScene().getWindow().hide();
@@ -126,6 +130,16 @@ public class LoginWindowController extends Clinic implements Initializable {
 
 
     }
+
+    private boolean isCorrectCharacters (String word) {
+        Pattern p = Pattern.compile("[a-zA-Z0-9]*");
+        Matcher m = p.matcher(word);
+
+        boolean matchFound = m.matches();
+        return matchFound;
+    }
+
+
 
 
 }
