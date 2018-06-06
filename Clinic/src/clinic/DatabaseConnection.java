@@ -243,7 +243,6 @@ public class DatabaseConnection {
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
     }
 
     //  DOCTORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -377,7 +376,7 @@ public class DatabaseConnection {
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
+        
     }
 
     // VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -520,7 +519,7 @@ public class DatabaseConnection {
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
+        
     }
 
     //DATES

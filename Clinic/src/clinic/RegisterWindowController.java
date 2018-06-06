@@ -1,6 +1,5 @@
 package clinic;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,11 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Collections;
 
 public class RegisterWindowController implements Initializable {
 
     private Alert alert = new Alert(Alert.AlertType.WARNING);
+    private Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
     private DatabaseConnection dbConn;
     private List<String> listOfSpecDoctor = new ArrayList<>();
 
@@ -29,9 +28,8 @@ public class RegisterWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
 
-            System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
             dbConn.setVisitsList();
@@ -84,7 +82,14 @@ public class RegisterWindowController implements Initializable {
                 if (isNumbersOnly(textPeselRP.getText()) && textPeselRP.getLength() == 11) {
                     if (isEmail(textEmailRP.getText())) {
                         dbConn.registerPatient(textPeselRP.getText(), textNameRP.getText(), textSurnameRP.getText(), textEmailRP.getText());
-                        //dbConn.comparePatients();
+                        alert2.setTitle("Informacja");
+                        alert2.setHeaderText("Zarejestrowano użytkownika pomyślnie");
+                        alert2.setContentText("Wcisnij OK, aby kontynuować");
+                        alert2.showAndWait();
+                        textNameRP.setText("");
+                        textSurnameRP.setText("");
+                        textPeselRP.setText("");
+                        textEmailRP.setText("");
                     } else {
                         alert.setTitle("Uwaga!");
                         alert.setHeaderText("Pole email");
@@ -120,7 +125,16 @@ public class RegisterWindowController implements Initializable {
                         if (isNumbersOnly(textRoomRD.getText())) {
                             if (textPasswordRD.getLength() >= 7) {
                                 dbConn.registerDoctor(textNameRD.getText(), textSurnameRD.getText(), textPasswordRD.getText(), comboBoxSpecDF.getSelectionModel().getSelectedItem(), textEmailRD.getText(), textRoomRD.getText());
-                                //dbConn.compareDoctors();
+                                alert2.setTitle("Informacja");
+                                alert2.setHeaderText("Zarejestrowano lekarza pomyślnie");
+                                alert2.setContentText("Wcisnij OK, aby kontynuować");
+                                alert2.showAndWait();
+                                textNameRD.setText("");
+                                textSurnameRD.setText("");
+                                textPasswordRD.setText("");
+                                comboBoxSpecDF.getSelectionModel().clearSelection();
+                                textRoomRD.setText("");
+                                textEmailRD.setText("");
                             } else {
                                 alert.setTitle("Uwaga!");
                                 alert.setHeaderText("Pole Hasło");
@@ -179,7 +193,6 @@ public class RegisterWindowController implements Initializable {
     @FXML
     private TableColumn<Patient, String> columnTableEmailP;
 
-
     @FXML
     private void findButton(ActionEvent event) {
         tableListP.getItems().clear();
@@ -228,7 +241,6 @@ public class RegisterWindowController implements Initializable {
     private TableColumn<Doctor, String> columnTablePhoneD;
     @FXML
     private TableColumn<Doctor, String> columnTableNrRoomD;
-
 
     @FXML
     private void findButtonDoctor(ActionEvent event) {
@@ -290,8 +302,9 @@ public class RegisterWindowController implements Initializable {
     private void visitListPatient() {
 
         listForPatientVisit();
-        if (!tableListD.getSelectionModel().isEmpty())
+        if (!tableListD.getSelectionModel().isEmpty()) {
             informationD.setText(tableListD.getSelectionModel().getSelectedItem().getImie() + " " + tableListD.getSelectionModel().getSelectedItem().getNazwisko() + " " + tableListD.getSelectionModel().getSelectedItem().getSpec());
+        }
     }
 
     //Wbyieranie daty
@@ -310,13 +323,19 @@ public class RegisterWindowController implements Initializable {
             listForPatientVisit();
 
             dbConn.compareLists();
+            alert2.setTitle("Informacja");
+            alert2.setHeaderText("Dodano wizytę pomyślnie");
+            alert2.setContentText("Wcisnij OK, aby kontynuować");
+            alert2.showAndWait();
+            datePicker.setValue(LocalDate.now());
+            tableHoursAndMinutes.getSelectionModel().clearSelection();
+            
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Nie dokonano wyboru");
             alert.setContentText("Prosze o sprawdzenie czy napewno został wybrany lekarz bądż pacjent");
             alert.showAndWait();
         }
-
 
     }
 
@@ -329,6 +348,12 @@ public class RegisterWindowController implements Initializable {
             doListForTime();
             listForPatientVisit();
             dbConn.compareLists();
+            alert2.setTitle("Informacja");
+            alert2.setHeaderText("Zmieniono wizytę pomyślnie");
+            alert2.setContentText("Wcisnij OK, aby kontynuować");
+            alert2.showAndWait();
+            datePicker.setValue(LocalDate.now());
+            tableHoursAndMinutes.getSelectionModel().clearSelection();
         } else {
             alert.setTitle("Uwaga!");
             alert.setHeaderText("Nie dokonano wyboru");
@@ -464,14 +489,12 @@ public class RegisterWindowController implements Initializable {
                 tableListVisit.setPlaceholder(new Label("Brak wyników z dla " + tableListP.getSelectionModel().getSelectedItem().getImie() + " " + tableListP.getSelectionModel().getSelectedItem().getNazwisko()));
             }
 
-
         }
     }
 
     @FXML
     private void listAllPatients() {
         if (tableListP.getItems().isEmpty()) {
-            System.out.println("XD");
             listForPatient(dbConn.getPatientsList());
         }
     }
