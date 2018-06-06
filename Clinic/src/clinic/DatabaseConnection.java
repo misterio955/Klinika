@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.util.Callback;
+
 import javax.swing.JOptionPane;
 
 public class DatabaseConnection {
@@ -73,26 +75,26 @@ public class DatabaseConnection {
     public void setDatePicker(DatePicker datePicker) {
         final Callback<DatePicker, DateCell> dayCellFactory
                 = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
                     @Override
-                    public DateCell call(final DatePicker datePicker) {
-                        return new DateCell() {
-                            @Override
-                            public void updateItem(LocalDate item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (item.isBefore(LocalDate.now())) {
-                                    setDisable(true);
-                                    setStyle("-fx-background-color: #ffc0cb;");
-                                }
-                                for (Date date : getDatesList()) {
-                                    if (item.toString().equals(date.getDay()) && date.getHoursBusy().size() == 32) {
-                                        setDisable(true);
-                                        setStyle("-fx-background-color: #ffc0cb;");
-                                    }
-                                }
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffc0cb;");
+                        }
+                        for (Date date : getDatesList()) {
+                            if (item.toString().equals(date.getDay()) && date.getHoursBusy().size() == 32) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #ffc0cb;");
                             }
-                        };
+                        }
                     }
                 };
+            }
+        };
         datePicker.setDayCellFactory(dayCellFactory);
     }
 
@@ -112,9 +114,9 @@ public class DatabaseConnection {
             String date = "";
             String hour = getDatesList().get(1).getHours().get(rd.nextInt(32));
             if (Integer.valueOf(day) < 10) {
-                 date = "2018-06-0" + day + " " + hour;
+                date = "2018-06-0" + day + " " + hour;
             } else {
-                 date = "2018-06-" + day + " " + hour;
+                date = "2018-06-" + day + " " + hour;
             }
 
             if (list.contains(date)) {
@@ -128,7 +130,7 @@ public class DatabaseConnection {
 
     }
 
-// PATIENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // PATIENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public void setPatientsList() throws SQLException {
         try (
                 Statement stmnt = connection.createStatement();
@@ -159,8 +161,22 @@ public class DatabaseConnection {
 
         for (Patient patient : patientsList) {
 
-            if (patient.getPesel().equals(pesel)) {
+            if (patient.getPesel().contains(pesel)) {
                 score = patient;
+            }
+        }
+        return score;
+    }
+
+    public List<Patient> getPatientByPESELList(String pesel) {
+
+        List<Patient> score = new ArrayList<>();
+        if (!pesel.isEmpty()) {
+            for (Patient patient : patientsList) {
+
+                if (patient.getPesel().contains(pesel)) {
+                    score.add(patient);
+                }
             }
         }
         return score;
@@ -169,13 +185,12 @@ public class DatabaseConnection {
     public List<Patient> getPatientByName(String firstName, String lastName) {
 
         List<Patient> score = new ArrayList<>();
-
-        for (Patient patient : patientsList) {
-
-            if (patient.getImie().equals(firstName) || patient.getNazwisko().equals(lastName)) {
-                score.add(patient);
+            for (Patient patient : patientsList) {
+                if (patient.getImie().toLowerCase().contains(firstName.toLowerCase()) || patient.getNazwisko().toLowerCase().contains(lastName.toLowerCase())) {
+                    score.add(patient);
+                }
             }
-        }
+
         return score;
     }
 
@@ -231,7 +246,7 @@ public class DatabaseConnection {
         JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
     }
 
-//  DOCTORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //  DOCTORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public void setDoctorsList() throws SQLException {
         try (
                 Statement stmnt = connection.createStatement();
@@ -265,7 +280,7 @@ public class DatabaseConnection {
 
         for (Doctor doctor : doctorsList) {
 
-            if (doctor.getImie().equals(firstName) || doctor.getNazwisko().equals(lastName)) {
+            if (doctor.getImie().toLowerCase().contains(firstName.toLowerCase()) || doctor.getNazwisko().toLowerCase().contains(lastName.toLowerCase())) {
                 score.add(doctor);
             }
         }
@@ -278,7 +293,7 @@ public class DatabaseConnection {
 
         for (Doctor doctor : doctorsList) {
 
-            if (doctor.getSpec().equals(spec)) {
+            if (doctor.getSpec().toLowerCase().contains(spec.toLowerCase())) {
                 score.add(doctor);
             }
         }
@@ -304,7 +319,7 @@ public class DatabaseConnection {
 
         for (Doctor doctor : doctorsList) {
 
-            if (doctor.getRoom().equals(room)) {
+            if (doctor.getRoom().contains(room)) {
                 score.add(doctor);
             }
         }
@@ -365,7 +380,7 @@ public class DatabaseConnection {
         JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
     }
 
-// VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
+    // VISISTS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public void setVisitsList() throws SQLException {
         try (
                 Statement stmnt = connection.createStatement();
@@ -399,7 +414,7 @@ public class DatabaseConnection {
 
         for (Visit visit : visitsList) {
 
-            if (visit.getDate().substring(0, 10).equals(date)) {
+            if (visit.getDate().substring(0, 10).contains(date)) {
                 score.add(visit);
             }
         }
@@ -433,7 +448,7 @@ public class DatabaseConnection {
         Visit visit = new Visit(String.valueOf(visitsList.size() + 1), doctor.getID(), patient.getPesel(), date, "Oczekiwana");
         visitsList.add(visit);
         addDate(date, doctor);
-        
+
 
     }
 
@@ -508,7 +523,7 @@ public class DatabaseConnection {
         JOptionPane.showMessageDialog(null, "Zmodyfikowano " + w + " rekordów.");
     }
 
-//DATES
+    //DATES
     public List<Date> getDatesList() {
 
         return datesList;
