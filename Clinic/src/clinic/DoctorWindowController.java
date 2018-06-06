@@ -9,7 +9,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,7 +17,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DoctrorWindowController implements Initializable {
+public class DoctorWindowController implements Initializable {
+
     private DatabaseConnection dbConn;
     private Alert alert = new Alert(Alert.AlertType.WARNING);
     private boolean cantRefresh = false;
@@ -29,7 +29,7 @@ public class DoctrorWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
 
             System.out.println("polaczono");
             dbConn.setDoctorsList();
@@ -71,7 +71,6 @@ public class DoctrorWindowController implements Initializable {
         }
     }
 
-
     //Button Wizyta zakończona
     @FXML
     private void visitIsEnd(ActionEvent event) {
@@ -104,7 +103,6 @@ public class DoctrorWindowController implements Initializable {
     //Date picker
     @FXML
     DatePicker datePicker = new DatePicker();
-
 
     @FXML
     private void choseDateVisit(ActionEvent event) {

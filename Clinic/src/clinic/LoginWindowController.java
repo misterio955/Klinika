@@ -29,7 +29,7 @@ public class LoginWindowController extends Clinic implements Initializable {
 
     public void connect() {
         try {
-            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
             System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
@@ -42,17 +42,18 @@ public class LoginWindowController extends Clinic implements Initializable {
     }
 
 
-    @FXML
+    
     private void showPatients() {
 
         try {
             connect();
-
-            dbConn.showList(dbConn.getVisitsList());
-            dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("80012236149"), "2018-06-19 14:15:00");
+           dbConn.showList(dbConn.getVisitsList()); 
+            //dbConn.makeXVisitsPerMonth(50);
+            //dbConn.createVisit(dbConn.getDoctorByID("2"), dbConn.getPatientByPESEL("80012236149"), "2018-06-19 14:15:00");
             //dbConn.changeVisitDate(dbConn.getVisitByID("8"), "2018-06-19 12:45:00");
             System.out.println("--------------------------");
-            dbConn.showList(dbConn.getVisitsList());
+            dbConn.showList(dbConn.getVisitsList()); 
+           dbConn.compareLists();
 
             dbConn.shutdown();
         } catch (SQLException ex) {
@@ -72,9 +73,10 @@ public class LoginWindowController extends Clinic implements Initializable {
 
     @FXML
     private void loginAdmin(ActionEvent e) {
+        
         if (loginAdmin.getText().equals("admin") && passwordAdmin.getText().equals("admin")) {
             try {
-
+               // showPatientas();
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterWindow.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
@@ -103,7 +105,7 @@ public class LoginWindowController extends Clinic implements Initializable {
 
 
         if (dbConn.getDoctorByID(loginDoctor.getText()) != null && dbConn.getDoctorByID(loginDoctor.getText()).getPassword().equals(passwordDoctor.getText())) {
-            DoctrorWindowController.setIDDoctor(Integer.valueOf(dbConn.getDoctorByID(loginDoctor.getText()).getID()));
+            DoctorWindowController.setIDDoctor(Integer.valueOf(dbConn.getDoctorByID(loginDoctor.getText()).getID()));
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DoctorWindow.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
