@@ -20,5 +20,6 @@
       <Button id="Visit_Do_Not_Take_Place_Button" layoutX="575.0" layoutY="520.0" mnemonicParsing="false" onAction="#visitDidNotTakePlace" prefHeight="25.0" prefWidth="210.0" text="Wizyta nie odbyla sie" />
       <Button id="Visit_Do_Not_Take_Place_Buttons" layoutX="575.0" layoutY="80.0" mnemonicParsing="false" onAction="#refresh" prefHeight="25.0" prefWidth="210.0" text="Odśwież" />
       <DatePicker fx:id="datePicker" layoutX="575.0" layoutY="40.0" onAction="#choseDateVisit" prefHeight="25.0" prefWidth="210.0" />
+      <Button id="Visit_Do_Not_Take_Place_Buttons" layoutX="575.0" layoutY="480.0" mnemonicParsing="false" onAction="#generatePDF" prefHeight="25.0" prefWidth="210.0" text="Wyswietl raport" />
    </children>
 </AnchorPane>

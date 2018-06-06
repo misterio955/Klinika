@@ -28,7 +28,7 @@ public class RegisterWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
 
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
@@ -304,6 +304,8 @@ public class RegisterWindowController implements Initializable {
         listForPatientVisit();
         if (!tableListD.getSelectionModel().isEmpty()) {
             informationD.setText(tableListD.getSelectionModel().getSelectedItem().getImie() + " " + tableListD.getSelectionModel().getSelectedItem().getNazwisko() + " " + tableListD.getSelectionModel().getSelectedItem().getSpec());
+        } else {
+            informationD.setText(" ");
         }
     }
 
@@ -486,9 +488,12 @@ public class RegisterWindowController implements Initializable {
                 columnVisitSurname.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
 
             } else {
+
                 tableListVisit.setPlaceholder(new Label("Brak wyników z dla " + tableListP.getSelectionModel().getSelectedItem().getImie() + " " + tableListP.getSelectionModel().getSelectedItem().getNazwisko()));
             }
 
+        }else {
+            informationP.setText("");
         }
     }
 

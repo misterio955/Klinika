@@ -31,7 +31,7 @@ public class LoginWindowController extends Clinic implements Initializable {
 
     public void connect() {
         try {
-            dbConn = new DatabaseConnection("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika", "root", "");
+            dbConn = new DatabaseConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/klinika?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
             System.out.println("polaczono");
             dbConn.setDoctorsList();
             dbConn.setPatientsList();
